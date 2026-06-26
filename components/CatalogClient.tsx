@@ -102,6 +102,26 @@ export function CatalogClient({
         <label className="visually-hidden" htmlFor="q">
           作品を検索（タイトル・読み・デザイナー・サークル）
         </label>
+        <svg
+          className="search-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <circle
+            cx="11"
+            cy="11"
+            r="7"
+            stroke="currentColor"
+            strokeWidth="1.8"
+          />
+          <path
+            d="m20 20-3.2-3.2"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+        </svg>
         <input
           id="q"
           type="search"
@@ -142,6 +162,14 @@ export function CatalogClient({
 
       <div className="catalog-layout">
         <aside id="filters" className="filters" data-open={filtersOpen}>
+          <div className="filters-head">
+            <span className="eyebrow">絞り込み</span>
+            {activeCount > 0 && (
+              <button type="button" className="clear-all" onClick={clearAll}>
+                クリア
+              </button>
+            )}
+          </div>
           <fieldset className="filter-group">
             <legend>種別</legend>
             <div className="chip-cloud">
@@ -248,8 +276,27 @@ export function CatalogClient({
             </div>
           ) : (
             <div className="empty-state">
-              <span className="empty-icon" aria-hidden="true">
-                🔍
+              <span className="card-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  width="26"
+                  height="26"
+                >
+                  <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                  />
+                  <path
+                    d="m20 20-3.2-3.2"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
               </span>
               <h3>条件に合う作品が見つかりませんでした</h3>
               <p>検索語を短くするか、絞り込みを減らしてみてください。</p>
@@ -257,7 +304,7 @@ export function CatalogClient({
                 type="button"
                 className="btn btn-primary"
                 onClick={clearAll}
-                style={{ marginTop: "var(--sp-4)" }}
+                style={{ marginTop: "var(--sp-2)" }}
               >
                 すべてクリア
               </button>

@@ -1,6 +1,7 @@
 // ボドゲ図鑑 — このサイトについて（運営・収録基準・データの作り方）。
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
   title: "このサイトについて",
@@ -11,22 +12,18 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      <header className="site-header">
-        <div className="container">
-          <Link className="brand" href="/">
-            <span className="brand-name">ボドゲ図鑑</span>
-            <span className="brand-tag">国内ボードゲーム・同人カタログ</span>
-          </Link>
-          <Link href="/about">このサイトについて</Link>
-        </div>
-      </header>
+      <a className="skip-link" href="#about-main">
+        本文へスキップ
+      </a>
+      <SiteHeader />
 
       <main>
-        <div className="container container-narrow detail">
+        <div id="about-main" className="container container-narrow detail">
           <nav className="breadcrumb" aria-label="パンくず">
             <Link href="/">← 一覧へ戻る</Link>
           </nav>
 
+          <span className="eyebrow">About</span>
           <h1>このサイトについて</h1>
           <p className="detail-desc">
             ボドゲ図鑑は、国内のボードゲーム・同人タイトルを日本語で検索・閲覧できる

@@ -11,6 +11,7 @@ import {
   formatYear,
   gameTags,
 } from "@/lib/catalog.mjs";
+import { SiteHeader } from "@/components/SiteHeader";
 
 const games = gamesData as unknown as Game[];
 
@@ -65,18 +66,13 @@ export default function GamePage({ params }: { params: { id: string } }) {
 
   return (
     <>
-      <header className="site-header">
-        <div className="container">
-          <Link className="brand" href="/">
-            <span className="brand-name">ボドゲ図鑑</span>
-            <span className="brand-tag">国内ボードゲーム・同人カタログ</span>
-          </Link>
-          <Link href="/about">このサイトについて</Link>
-        </div>
-      </header>
+      <a className="skip-link" href="#detail-main">
+        本文へスキップ
+      </a>
+      <SiteHeader />
 
       <main>
-        <div className="container container-narrow detail">
+        <div id="detail-main" className="container container-narrow detail">
           <nav className="breadcrumb" aria-label="パンくず">
             <Link href="/">← 一覧へ戻る</Link>
           </nav>

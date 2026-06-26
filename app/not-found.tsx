@@ -5,6 +5,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
   title: "ページが見つかりません — ボドゲ図鑑",
@@ -15,27 +16,23 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <>
-      <header className="site-header">
-        <div className="container">
-          <Link className="brand" href="/">
-            <span className="brand-name">ボドゲ図鑑</span>
-          </Link>
-          <Link href="/about">このサイトについて</Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>
         <section className="hero">
           <div className="container container-narrow">
-            <p className="badge">404</p>
+            <span className="badge badge-accent">404</span>
             <h1>ページが見つかりません</h1>
             <p className="hero-lead">
               お探しのページは見つかりませんでした。移動・削除されたか、URL
               が誤っている可能性があります。
             </p>
             <div className="hero-actions">
-              <Link className="btn btn-primary" href="/">
+              <Link className="btn btn-primary btn-lg" href="/">
                 ホームへ戻る
+              </Link>
+              <Link className="btn btn-ghost" href="/about">
+                このサイトについて
               </Link>
             </div>
           </div>

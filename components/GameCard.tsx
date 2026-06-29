@@ -1,5 +1,11 @@
-// ボドゲ図鑑 — 一覧カード（プレゼンテーション）。
+// ボドゲ図鑑 — 棚に並ぶ「箱（ボックスアート）」1点（プレゼンテーション）。
 // カード全体が1つのリンク。内部に別リンクを入れ子にしない（外部リンクは詳細のみ）。
+//
+// 構造コンセプト「ゲーム棚」:
+//   均一なフラットカードではなく、ゲーム箱の佇まいを与える。
+//   - 箱の天面（lid）に種別を刷り、背に厚み（spine）を持たせて棚に「乗っている」感を出す。
+//   - 仕様（人数・時間）は箱面の隅に押された「スペック刻印」プレートとして見せる。
+//   - メカニクス/カテゴリは箱の裏面に列記された「中身」表記の体で下端に並べる。
 import Link from "next/link";
 import type { Game } from "@/lib/types";
 import {
@@ -11,7 +17,6 @@ import {
 
 const MAX_TAGS = 3;
 
-// 仕様アイコン（装飾。意味は aria-label / テキストで伝えるので aria-hidden）。
 function IconPlayers() {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -39,27 +44,6 @@ function IconTime() {
     </svg>
   );
 }
-function IconYear() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect
-        x="3.5"
-        y="5"
-        width="17"
-        height="15"
-        rx="2.5"
-        stroke="currentColor"
-        strokeWidth="1.7"
-      />
-      <path
-        d="M3.5 9.5h17M8 3.5v3M16 3.5v3"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
 
 export function GameCard({ game }: { game: Game }) {
   const tags = gameTags(game);
@@ -68,36 +52,49 @@ export function GameCard({ game }: { game: Game }) {
   const isDoujin = game.type === "同人・インディー";
 
   return (
-    <Link className="game-card" href={`/games/${game.id}/`}>
-      <span
-        className={`type-badge ${isDoujin ? "type-badge--doujin" : "type-badge--commercial"}`}
-      >
-        {game.type}
+    <Link
+      className={`game-box ${isDoujin ? "game-box--doujin" : "game-box--commercial"}`}
+      href={`/games/${game.id}/`}
+    >
+      {/* 箱の厚み（spine）。装飾なので aria 非対象。 */}
+      <span className="box-spine" aria-hidden="true" />
+
+      {/* 箱の天面（lid）= 種別を刷ったカラーバンド */}
+      <span className="box-lid">
+        <span className="box-lid-type">{game.type}</span>
+        <span className="box-lid-year tabular" aria-label="発表年">
+          {formatYear(game)}
+        </span>
       </span>
-      <h3>{game.title}</h3>
-      <span className="reading">{game.reading}</span>
-      <div className="spec-row">
-        <span className="spec-item" aria-label="人数">
-          <IconPlayers />
-          <span className="num">{formatPlayers(game)}</span>
+
+      {/* 箱の表面 */}
+      <span className="box-face">
+        <span className="box-title">{game.title}</span>
+        <span className="box-reading">{game.reading}</span>
+
+        {/* スペック刻印プレート（箱面の隅に押された規格表記の体） */}
+        <span className="spec-plate">
+          <span className="spec-cell" aria-label="人数">
+            <IconPlayers />
+            <span className="num tabular">{formatPlayers(game)}</span>
+          </span>
+          <span className="spec-div" aria-hidden="true" />
+          <span className="spec-cell" aria-label="プレイ時間">
+            <IconTime />
+            <span className="num tabular">{formatTime(game)}</span>
+          </span>
         </span>
-        <span className="spec-item" aria-label="プレイ時間">
-          <IconTime />
-          <span className="num">{formatTime(game)}</span>
-        </span>
-        <span className="spec-item" aria-label="発表年">
-          <IconYear />
-          <span className="num">{formatYear(game)}</span>
-        </span>
-      </div>
-      <div className="card-tags">
+      </span>
+
+      {/* 箱の裏面「中身」表記（メカニクス・カテゴリ） */}
+      <span className="box-contents">
         {shown.map((t) => (
-          <span className="tag" key={t}>
+          <span className="content-chip" key={t}>
             {t}
           </span>
         ))}
-        {rest > 0 && <span className="tag-more">＋{rest}</span>}
-      </div>
+        {rest > 0 && <span className="content-more">＋{rest}</span>}
+      </span>
     </Link>
   );
 }

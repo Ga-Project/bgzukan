@@ -1,6 +1,10 @@
 // ボドゲ図鑑 — トップ（カタログ）。
 // データはビルド時に埋め込み、検索/絞り込みは CatalogClient（client）で行う。
-// static export のため、初期 HTML には全件のカードが描画される（JS 評価前でも閲覧可）。
+// static export のため、初期 HTML には全件が棚に並んだ状態で描画される（JS 評価前でも閲覧可）。
+//
+// 構造コンセプト「ゲーム棚」:
+//   汎用の hero + 均一カードグリッドを使わない。雑誌的な題字（masthead）で始まり、
+//   作品は棚（shelf）に並ぶボックスアート（箱）として陳列される。
 import Link from "next/link";
 import gamesData from "@/data/games.json";
 import { collectFacets } from "@/lib/catalog.mjs";
@@ -13,7 +17,7 @@ const games = gamesData as unknown as Game[];
 export default function Home() {
   const facets = collectFacets(games);
 
-  // hero のカタログ規模インジケータ（収録の手触りを数で伝える）
+  // 題字に添える「奥付」風の規模インジケータ（収録の手触りを数で伝える）。
   const total = games.length;
   const doujinCount = games.filter(
     (g) => g.type === "同人・インディー",
@@ -27,49 +31,42 @@ export default function Home() {
       <a className="skip-link" href="#catalog">
         本文へスキップ
       </a>
-      <SiteHeader />
+      <SiteHeader showTag={false} />
 
       <main>
-        <div className="container">
-          <section className="catalog-hero" aria-labelledby="hero-h">
-            <span className="eyebrow">国内ボードゲーム・同人カタログ</span>
-            <h1 id="hero-h">
-              卓を囲む日本のゲームを、
-              <br />
-              <span className="accent-text">日本語で引く。</span>
+        {/* ── 題字（masthead）: 雑誌の表紙のように名前を大きく組み、奥付の数値を罫線で並べる ── */}
+        <section className="masthead" aria-labelledby="masthead-h">
+          <div className="container masthead-inner">
+            <p className="masthead-kicker">国内ボードゲーム・同人インディー目録</p>
+            <h1 id="masthead-h" className="masthead-title">
+              ボドゲ<span className="masthead-title-accent">図鑑</span>
             </h1>
-            <p className="lead">
-              海外中心のデータベースでは見つけにくい国内・同人・インディーの
-              ボードゲームを、人数・プレイ時間・メカニクス・デザイナー・サークルで
-              検索・絞り込みできるカタログ。一次情報をもとに編集し、順次収録を
-              拡大しています。
+            <p className="masthead-sub">
+              卓を囲む日本のゲームを、棚から手に取るように引く。海外中心の
+              データベースでは見つけにくい国内・同人・インディーを、人数・時間・
+              メカニクス・デザイナー・サークルで探せる目録。
             </p>
 
-            <div className="hero-stats">
-              <div className="hero-stat">
-                <span className="num tabular">{total}</span>
-                <span className="label">収録タイトル</span>
+            {/* 奥付（colophon）: 罫線で区切った定規目盛り風の規模表記 */}
+            <dl className="colophon" aria-label="収録規模">
+              <div className="colophon-cell">
+                <dt>収録タイトル</dt>
+                <dd className="tabular">{total}</dd>
               </div>
-              <div className="hero-stat">
-                <span className="num tabular">{doujinCount}</span>
-                <span className="label">同人・インディー</span>
+              <div className="colophon-cell">
+                <dt>同人・インディー</dt>
+                <dd className="tabular">{doujinCount}</dd>
               </div>
-              <div className="hero-stat">
-                <span className="num tabular">{designerCount}</span>
-                <span className="label">デザイナー</span>
+              <div className="colophon-cell">
+                <dt>デザイナー</dt>
+                <dd className="tabular">{designerCount}</dd>
               </div>
-            </div>
-
-            <p className="hero-note">
-              掲載は公式・一次情報をもとに編集部（株式会社Ga
-              Project）が作成しています。
-              <Link href="/about">収録の基準・運営について ›</Link>
-            </p>
-          </section>
-
-          <div id="catalog">
-            <CatalogClient games={games} facets={facets} />
+            </dl>
           </div>
+        </section>
+
+        <div id="catalog">
+          <CatalogClient games={games} facets={facets} />
         </div>
       </main>
 

@@ -3,21 +3,21 @@
  * globals.css は共通の構造・a11y・コンポーネント挙動を持つ "出発点"。
  * このファイルは globals.css の後に読み込まれ、:root トークンを上書きして
  * カタログ固有の個性（色・温度感・形・密度）を与え、さらにカタログ専用の
- * コンポーネント（検索・絞り込みチップ・作品カード・詳細）を足す。
+ * コンポーネントを足す。
  *
- * ■ この製品の世界観
- *   「温かく・遊び心があり・整理された趣味コミュニティ感」。
- *   テーブルトップ（卓を囲む時間・紙のカード・木のテーブル）の温かみと、
- *   資料カタログとしての読みやすさ・信頼感を両立させる。
- *   → 暖色オフホワイト地（紙）＋テラコッタの差し色＋大きめの角丸（柔らかさ）。
+ * ■ この製品の構造コンセプト「ゲーム棚」
+ *   作品を均一なカードグリッドで並べない。雑誌的な題字（masthead）で始まり、
+ *   作品はゲーム箱の佇まいを持つ「箱（box-art）」として、棚（shelf）に陳列される。
+ *     - masthead : 大きく組んだ題字 + 罫線で並ぶ奥付（規模）
+ *     - filter-rail : 上部横長ツールバー（検索 + 絞り込み開閉）
+ *     - shelf : 種別ごと/検索結果の陳列棚。箱が「乗る」棚板を持つ
+ *     - box-art : 天面バンド(種別)・厚み(spine)・題字・スペック刻印・中身表記を持つ箱
+ *   温かいテラコッタ配色（卓を囲む遊びの熱量・紙と木の温度感）は活かす。
  *
- * ■ アクセシビリティ（出荷前検証済み・全て WCAG AA 以上）
+ * ■ アクセシビリティ（全て WCAG AA 以上・light/dark 双方）
  *   light: accent(#ba4021) vs white 5.46 / vs bg 5.41 / text-dim vs bg 5.17
  *   dark : accent(#ec8065) vs bg 6.96 / accent-fg vs accent 6.77 / text-dim vs bg 7.51
- *   種別バッジ（商業=藍 / 同人=テラコッタ）も light/dark 双方で文字対比 ≥5.7。
- *
- * ■ 思想: 構造クラス（.btn / .card / .hero / .badge …）の見た目は個別に
- *   書き換えず、トークンで個性を出す。カタログ固有の UI だけを下で定義する。
+ *   種別バンド（商業=藍 / 同人=テラコッタ）も light/dark 双方で文字対比 ≥5.7。
  */
 
 :root {
@@ -32,38 +32,43 @@
   --neutral-hue: 30;
   --neutral-chroma: 14%;
 
-  /* ===== 形・密度: 大きめの角丸＝柔らかさ・遊び心。ややゆったり。 ===== */
-  --radius-sm: 11px;
-  --radius: 16px;
-  --radius-lg: 22px;
-  --radius-xl: 30px;
-  --density: 1.02;
+  /* ===== 形・密度: 箱・棚らしい控えめな角丸。やや密に詰めて陳列感を出す。 ===== */
+  --radius-sm: 7px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --density: 1;
 
-  /* ===== カタログ固有: 欠損プレースホルダ専用の淡色（text-dim より淡いが装飾用途のみ） ===== */
+  /* ===== カタログ固有: 欠損プレースホルダ専用の淡色 ===== */
   --text-faint: hsl(var(--neutral-hue) 8% 56%);
 
-  /* ===== 種別バッジ（意味の区別を色で保持。商業=落ち着いた藍 / 同人=温かいテラコッタ） ===== */
+  /* ===== 種別の色（商業=落ち着いた藍 / 同人=温かいテラコッタ） ===== */
+  --type-commercial-h: 214;
+  --type-doujin-h: 12;
   --badge-commercial-bg: hsl(214 50% 92%);
   --badge-commercial-text: hsl(214 60% 32%);
   --badge-doujin-bg: hsl(16 60% 91%);
   --badge-doujin-text: hsl(12 64% 36%);
 
-  --sidebar-w: 16.5rem;
+  /* ===== 棚板（木目の面）の色。紙地よりわずかに濃い暖色面。 ===== */
+  --shelf-board: hsl(28 24% 84%);
+  --shelf-board-edge: hsl(26 26% 72%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* dark accent は globals がトークンで持ち上げる。ここでは種別バッジ等のみ再定義。 */
     --text-faint: hsl(var(--neutral-hue) 8% 48%);
     --badge-commercial-bg: hsl(214 30% 22%);
     --badge-commercial-text: hsl(214 55% 75%);
     --badge-doujin-bg: hsl(14 35% 22%);
     --badge-doujin-text: hsl(14 70% 74%);
+    --shelf-board: hsl(28 14% 20%);
+    --shelf-board-edge: hsl(26 16% 14%);
   }
 }
 
 /* =========================================================================
- * header brand — カタログのマーク＋名前＋副題
+ * header brand — カタログのマーク＋名前
  * ========================================================================= */
 .brand {
   display: inline-flex;
@@ -75,14 +80,14 @@
 .brand:hover {
   color: var(--text);
 }
-/* サイコロ目をモチーフにした角丸マーク（accent グラデ。globals の .brand-mark を踏襲しつつ図鑑用に内容を差す） */
+/* サイコロ目をモチーフにした角丸マーク */
 .brand-mark-dice {
   display: inline-grid;
   place-items: center;
   width: 2.1rem;
   height: 2.1rem;
   flex: none;
-  border-radius: 10px;
+  border-radius: 8px;
   background: linear-gradient(
     135deg,
     var(--accent),
@@ -113,13 +118,11 @@
   color: var(--text-dim);
   letter-spacing: var(--tracking-snug);
 }
-/* 狭い画面ではブランド副題を畳んでヘッダーを1行に収める */
 @media (max-width: 560px) {
   .brand-tag {
     display: none;
   }
 }
-/* ヘッダーのナビリンク（ブランド以外）は控えめ・改行させない */
 .site-header .container > a:not(.brand) {
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
@@ -131,148 +134,126 @@
 }
 
 /* =========================================================================
- * hero — カタログの世界観を出す導入（globals の .hero 装飾を継承）
+ * masthead — 雑誌の表紙のような題字（hero ではない）
  * ========================================================================= */
-.catalog-hero {
+.masthead {
   position: relative;
   isolation: isolate;
-  padding: clamp(var(--sp-12), 8vw, var(--sp-16)) 0 var(--sp-8);
+  border-bottom: 2px solid var(--text);
+  background: var(--surface);
   overflow: hidden;
 }
-/* 暖色の放射グラデ＋極薄グリッド（卓上の質感）。装飾なので aria 非対象。 */
-.catalog-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background:
-    radial-gradient(
-      55% 60% at 82% -5%,
-      hsl(var(--accent-h) var(--accent-s) 58% / 0.18),
-      transparent 70%
-    ),
-    radial-gradient(
-      50% 55% at -5% 20%,
-      hsl(calc(var(--accent-h) + 28) calc(var(--accent-s) - 8%) 60% / 0.12),
-      transparent 65%
-    );
-}
-.catalog-hero::after {
+/* 紙地に極薄の暖色グラデ（卓上の照明感）。装飾なので aria 非対象。 */
+.masthead::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image:
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 52px 52px;
-  mask-image: radial-gradient(75% 70% at 30% 20%, #000 0%, transparent 78%);
-  -webkit-mask-image: radial-gradient(75% 70% at 30% 20%, #000 0%, transparent 78%);
-  opacity: 0.45;
-}
-.catalog-hero .eyebrow {
-  margin-bottom: var(--sp-3);
-}
-.catalog-hero h1 {
-  font-size: clamp(var(--fs-2xl), 5.6vw, var(--fs-3xl));
-  font-weight: var(--fw-black);
-  letter-spacing: var(--tracking-tight);
-  max-width: 20ch;
-}
-.catalog-hero h1 .accent-text {
-  background: linear-gradient(
-    120deg,
-    var(--accent),
-    hsl(calc(var(--accent-h) + 28) var(--accent-s) calc(var(--accent-l) + 6%))
+  background: radial-gradient(
+    70% 120% at 92% 0%,
+    hsl(var(--accent-h) var(--accent-s) 58% / 0.12),
+    transparent 70%
   );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
-.catalog-hero .lead {
+.masthead-inner {
+  padding-block: clamp(var(--sp-8), 6vw, var(--sp-16)) var(--sp-8);
+}
+.masthead-kicker {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--accent);
+  text-transform: none;
+}
+.masthead-title {
+  margin: var(--sp-2) 0 0;
+  font-family: var(--font-display);
+  /* 表紙ロゴらしい巨大な題字 */
+  font-size: clamp(3.2rem, 13vw, 7rem);
+  font-weight: var(--fw-black);
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  color: var(--text);
+}
+.masthead-title-accent {
+  color: var(--accent);
+}
+.masthead-sub {
+  margin-top: var(--sp-5);
+  max-width: 54ch;
   font-size: var(--fs-md);
   line-height: 1.6;
   color: var(--text-soft);
-  margin-top: var(--sp-5);
-  max-width: 58ch;
 }
-/* hero 内のカタログ規模インジケータ（収録の手触りを数で伝える） */
-.hero-stats {
+
+/* 奥付（colophon）: 罫線で区切った定規目盛り風の規模表記 */
+.colophon {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--sp-6) var(--sp-8);
-  margin-top: var(--sp-8);
+  margin: var(--sp-8) 0 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  overflow: hidden;
+  width: fit-content;
+  max-width: 100%;
 }
-.hero-stat {
+.colophon-cell {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  padding: var(--sp-3) var(--sp-6);
+  border-right: 1px solid var(--border);
 }
-.hero-stat .num {
+.colophon-cell:last-child {
+  border-right: none;
+}
+.colophon-cell dt {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-dim);
+}
+.colophon-cell dd {
+  margin: 0;
   font-family: var(--font-display);
   font-size: var(--fs-lg);
   font-weight: var(--fw-black);
   color: var(--text);
-  letter-spacing: var(--tracking-snug);
-}
-.hero-stat .label {
-  font-size: var(--fs-xs);
-  color: var(--text-dim);
-  letter-spacing: var(--tracking-wide);
-}
-.hero-note {
-  margin-top: var(--sp-6);
-  font-size: var(--fs-sm);
-  color: var(--text-dim);
-  max-width: 64ch;
-}
-.hero-note a {
-  margin-left: var(--sp-1);
-  white-space: nowrap;
-  font-weight: var(--fw-semibold);
+  line-height: 1.1;
 }
 
 /* =========================================================================
- * catalog layout（desktop=サイドバー + 結果 / mobile=縦積み）
+ * filter-rail — 上部横長ツールバー（検索 + 絞り込み開閉）
  * ========================================================================= */
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--sp-6);
-  padding-bottom: var(--sp-16);
+.filter-rail {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: stretch;
+  margin-top: var(--sp-8);
+  margin-bottom: var(--sp-3);
 }
-@media (min-width: 1024px) {
-  .catalog-layout {
-    grid-template-columns: var(--sidebar-w) 1fr;
-    gap: var(--sp-8);
-    align-items: start;
-  }
-}
-
-/* =========================================================================
- * 検索ボックス（フィルタの外・常時表示・大きめで主役級）
- * ========================================================================= */
 .search {
   position: relative;
-  margin-bottom: var(--sp-5);
-  max-width: 44rem;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 .search-icon {
   position: absolute;
   left: var(--sp-4);
   top: 50%;
   transform: translateY(-50%);
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.2rem;
+  height: 1.2rem;
   color: var(--text-dim);
   pointer-events: none;
   z-index: 1;
 }
 .search input[type="search"] {
-  min-height: 52px;
-  font-size: var(--fs-md);
-  padding-left: 3rem;
-  padding-right: 3rem;
+  min-height: 50px;
+  font-size: var(--fs-base);
+  padding-left: 2.9rem;
+  padding-right: 2.9rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
 }
@@ -306,154 +287,48 @@
   color: var(--text);
   background: var(--surface-2);
 }
-
-/* =========================================================================
- * filters（絞り込み）
- * ========================================================================= */
+/* 絞り込みトグル: 棚の「分類タブを開く」ボタン */
 .filter-toggle {
-  display: inline-flex;
-  margin-bottom: var(--sp-4);
-}
-@media (min-width: 1024px) {
-  .filter-toggle {
-    display: none;
-  }
-}
-.filters {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: var(--sp-6);
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-6);
-  box-shadow: var(--shadow-sm);
-}
-.filters-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--sp-3);
-  padding-bottom: var(--sp-4);
-  border-bottom: 1px solid var(--border);
-}
-.filters-head .eyebrow {
-  margin: 0;
-}
-@media (min-width: 1024px) {
-  .filters {
-    position: sticky;
-    top: calc(var(--header-h) + var(--sp-4));
-  }
-}
-/* mobile/tablet では開閉式。desktop（>=1024px）では常時サイドバー表示。 */
-@media (max-width: 1023px) {
-  .filters[data-open="false"] {
-    display: none;
-  }
-}
-.filter-group {
-  border: none;
-  padding: 0;
-  margin: 0;
-  min-width: 0;
-}
-.filter-group legend {
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-bold);
-  color: var(--text);
-  padding: 0;
-  margin-bottom: var(--sp-3);
-}
-.chip-cloud {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-2);
-}
-.chip-cloud--scroll {
-  max-height: 13rem;
-  overflow-y: auto;
-  padding: 2px;
-}
-
-/* チップ（実体は checkbox を label で包む＝ネイティブ操作・SR 堅牢） */
-.chip {
+  flex: none;
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
-  min-height: 44px; /* タップターゲット 44px 確保 */
-  padding: var(--sp-1) var(--sp-4);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-pill);
-  background: var(--surface-2);
-  color: var(--text-soft);
+  min-height: 50px;
+  padding: 0 var(--sp-5);
+  font: inherit;
+  font-weight: var(--fw-semibold);
   font-size: var(--fs-sm);
-  font-weight: var(--fw-medium);
-  cursor: pointer;
-  user-select: none;
-  transition:
-    border-color var(--transition),
-    background var(--transition),
-    color var(--transition),
-    transform var(--transition);
-}
-.chip:hover {
-  border-color: var(--border-strong);
+  color: var(--text);
   background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition:
+    background var(--transition),
+    border-color var(--transition);
 }
-.chip input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  margin: 0;
+.filter-toggle svg {
+  width: 1.1rem;
+  height: 1.1rem;
 }
-.chip:has(input:checked) {
-  border-color: transparent;
+.filter-toggle:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+.filter-toggle[aria-expanded="true"] {
   background: var(--accent-tint);
   color: var(--accent);
-  font-weight: var(--fw-semibold);
-}
-.chip:has(input:focus-visible) {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
-}
-.chip-count {
-  font-size: var(--fs-xs);
-  color: var(--text-dim);
-  font-variant-numeric: tabular-nums;
-}
-.chip:has(input:checked) .chip-count {
-  color: var(--accent);
-  opacity: 0.8;
+  border-color: transparent;
 }
 
-/* =========================================================================
- * result header（件数 + 適用中の条件）
- * ========================================================================= */
-.result-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sp-3) var(--sp-4);
-  margin-bottom: var(--sp-5);
-}
-.result-count {
-  font-size: var(--fs-sm);
-  color: var(--text-dim);
-  margin: 0;
-}
-.result-count strong {
-  color: var(--text);
-  font-size: var(--fs-md);
-  font-weight: var(--fw-bold);
-  font-variant-numeric: tabular-nums;
-}
+/* 適用中の条件（ツールバー直下・付箋の体） */
 .active-filters {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-2);
   align-items: center;
+  margin-bottom: var(--sp-4);
 }
 .active-chip {
   display: inline-flex;
@@ -503,153 +378,368 @@
 }
 
 /* =========================================================================
- * game grid / card — 作品カードの作り込み
+ * filter-panel — 絞り込み（インライン押し出し式の分類タブ群）
  * ========================================================================= */
-.game-grid {
+.filter-panel {
   display: grid;
-  gap: var(--sp-4);
   grid-template-columns: 1fr;
 }
-@media (min-width: 480px) {
-  .game-grid {
-    grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
-  }
+/* React は hidden 属性で開閉する。明示 display が UA の [hidden]{display:none} を
+   上書きしてしまうため、hidden を明示的に尊重する（閉時は確実に隠す）。 */
+.filter-panel[hidden] {
+  display: none;
 }
-@media (min-width: 1024px) {
-  .game-grid {
-    gap: var(--sp-5);
-  }
-}
-
-.game-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
+.filter-panel {
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-6);
+  padding: var(--sp-6);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: var(--sp-5);
   box-shadow: var(--shadow-sm);
-  text-decoration: none;
-  color: var(--text);
-  overflow: hidden;
-  transition:
-    transform var(--transition),
-    border-color var(--transition),
-    box-shadow var(--transition);
 }
-/* 上辺に accent のアクセントライン（hover で出現＝触れる手応え） */
-.game-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--accent),
-    hsl(calc(var(--accent-h) + 26) var(--accent-s) calc(var(--accent-l) + 8%))
-  );
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--transition-slow);
+@media (min-width: 720px) {
+  .filter-panel {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-6);
+  }
+  .filter-group--tags {
+    grid-column: 1 / -1;
+  }
 }
-.game-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--border-strong);
-  box-shadow: var(--shadow-lg);
-  color: var(--text);
-}
-.game-card:hover::before {
-  transform: scaleX(1);
-}
-.game-card h3 {
+.filter-group {
+  border: none;
+  padding: 0;
   margin: 0;
-  margin-top: var(--sp-1);
-  font-size: var(--fs-md);
-  font-weight: var(--fw-bold);
-  letter-spacing: var(--tracking-snug);
-  line-height: var(--lh-snug);
+  min-width: 0;
 }
-.game-card .reading {
+.filter-group legend {
   font-size: var(--fs-sm);
-  color: var(--text-dim);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  padding: 0;
+  margin-bottom: var(--sp-3);
 }
-.spec-row {
+.chip-cloud {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--sp-2) var(--sp-3);
-  margin-top: var(--sp-3);
+  gap: var(--sp-2);
 }
-.spec-item {
+.chip-cloud--scroll {
+  max-height: 11rem;
+  overflow-y: auto;
+  padding: 2px;
+}
+/* チップ（実体は checkbox を label で包む＝ネイティブ操作・SR 堅牢） */
+.chip {
   display: inline-flex;
   align-items: center;
-  gap: var(--sp-1);
-  font-size: var(--fs-sm);
+  gap: var(--sp-2);
+  min-height: 44px; /* タップターゲット 44px 確保 */
+  padding: var(--sp-1) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
   color: var(--text-soft);
-}
-.spec-item svg {
-  width: 1rem;
-  height: 1rem;
-  color: var(--text-dim);
-  flex: none;
-}
-.spec-item .num {
-  color: var(--text);
+  font-size: var(--fs-sm);
   font-weight: var(--fw-medium);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    color var(--transition);
+}
+.chip:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+.chip input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+}
+.chip:has(input:checked) {
+  border-color: transparent;
+  background: var(--accent-tint);
+  color: var(--accent);
+  font-weight: var(--fw-semibold);
+}
+.chip:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.chip-count {
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
   font-variant-numeric: tabular-nums;
 }
-.card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-1);
-  margin-top: auto;
-  padding-top: var(--sp-3);
+.chip:has(input:checked) .chip-count {
+  color: var(--accent);
+  opacity: 0.8;
 }
 
 /* =========================================================================
- * badges / tags
+ * result count
  * ========================================================================= */
-.type-badge {
+.result-count {
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  margin: 0 0 var(--sp-6);
+}
+.result-count strong {
+  color: var(--text);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+}
+
+/* =========================================================================
+ * shelves / shelf — 陳列棚
+ * ========================================================================= */
+.shelves {
+  padding-bottom: var(--sp-16);
+}
+.shelf {
+  margin-top: var(--sp-12);
+}
+.shelf:first-of-type {
+  margin-top: 0;
+}
+/* 棚見出し: 木札のようなタブ + 件数 */
+.shelf-label {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.shelf-label-tab {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--tracking-snug);
+  color: var(--text);
+  padding: var(--sp-1) var(--sp-4);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-bottom: 3px solid var(--accent);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+.shelf-label-count {
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  font-weight: var(--fw-semibold);
+}
+
+/* 棚の段（箱が並ぶ列 + その下の棚板） */
+.shelf-row {
+  position: relative;
+}
+/* 箱のラック（陳列）。狭幅では縦積み、広幅では行に詰めて棚に並べる。 */
+.box-rack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-4);
+}
+@media (min-width: 460px) {
+  .box-rack {
+    grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+    gap: var(--sp-5) var(--sp-4);
+  }
+}
+.box-slot {
+  display: flex;
+}
+/* 棚板（box が乗る木の面）。箱の下端から少しはみ出して "棚に乗る" 見え方を作る。 */
+.shelf-board {
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: linear-gradient(
+    180deg,
+    var(--shelf-board),
+    var(--shelf-board-edge)
+  );
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.18),
+    0 6px 10px hsl(28 30% 30% / 0.14);
+}
+@media (prefers-color-scheme: dark) {
+  .shelf-board {
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.05),
+      0 6px 12px hsl(0 0% 0% / 0.5);
+  }
+}
+
+/* =========================================================================
+ * game-box — 棚に並ぶゲーム箱（ボックスアート）
+ * ========================================================================= */
+.game-box {
+  --type-h: var(--type-commercial-h);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--surface);
+  /* 箱の縁（厚紙の角）。上は天面バンドで覆うので角丸は下寄り。 */
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text);
+  overflow: hidden;
+  /* 箱の "立ち上がり"。棚に置かれた厚みのある箱の影。 */
+  box-shadow:
+    0 1px 0 var(--border-strong),
+    var(--shadow-sm);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+.game-box--doujin {
+  --type-h: var(--type-doujin-h);
+}
+/* 箱の厚み（spine）: 左辺に貼った種別色の背 */
+.box-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--type-h) 55% 48%),
+    hsl(var(--type-h) 55% 40%)
+  );
+}
+/* 手に取る手応え: 棚から少し引き出す lift */
+.game-box:hover {
+  transform: translateY(-5px);
+  color: var(--text);
+  box-shadow:
+    0 1px 0 var(--border-strong),
+    var(--shadow-lg);
+}
+
+/* 箱の天面バンド（種別を刷る） */
+.box-lid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3) var(--sp-2) calc(6px + var(--sp-3));
+  background: hsl(var(--type-h) 48% 92%);
+  color: hsl(var(--type-h) 60% 30%);
+  border-bottom: 1px solid hsl(var(--type-h) 40% 82%);
+}
+@media (prefers-color-scheme: dark) {
+  .box-lid {
+    background: hsl(var(--type-h) 30% 20%);
+    color: hsl(var(--type-h) 60% 78%);
+    border-bottom-color: hsl(var(--type-h) 30% 28%);
+  }
+}
+.box-lid-type {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wide);
+}
+.box-lid-year {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  opacity: 0.85;
+}
+
+/* 箱の表面 */
+.box-face {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-4) var(--sp-4) var(--sp-4) calc(6px + var(--sp-4));
+  flex: 1 1 auto;
+}
+.box-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--tracking-snug);
+  line-height: var(--lh-snug);
+  color: var(--text);
+}
+.box-reading {
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+/* スペック刻印プレート（規格表記の体・箱面下部に押す） */
+.spec-plate {
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-bold);
-  letter-spacing: var(--tracking-snug);
-  padding: 3px 10px;
-  border-radius: var(--radius-pill);
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+  padding: var(--sp-1) var(--sp-3);
+  background: var(--surface-sunken);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
 }
-.type-badge--commercial {
-  background: var(--badge-commercial-bg);
-  color: var(--badge-commercial-text);
+.spec-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-sm);
+  color: var(--text-soft);
 }
-.type-badge--doujin {
-  background: var(--badge-doujin-bg);
-  color: var(--badge-doujin-text);
+.spec-cell svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--text-dim);
+  flex: none;
 }
-.tag {
+.spec-cell .num {
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+}
+.spec-div {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border-strong);
+}
+
+/* 箱裏の「中身」表記（メカニクス・カテゴリ） */
+.box-contents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  padding: 0 var(--sp-4) var(--sp-4) calc(6px + var(--sp-4));
+  margin-top: auto;
+}
+.content-chip {
   display: inline-flex;
   align-items: center;
   font-size: var(--fs-xs);
   font-weight: var(--fw-medium);
-  padding: 3px 9px;
-  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
   background: var(--surface-2);
   color: var(--text-soft);
   border: 1px solid var(--border);
 }
-.tag-more {
+.content-more {
   display: inline-flex;
   align-items: center;
   font-size: var(--fs-xs);
   font-weight: var(--fw-semibold);
   color: var(--text-dim);
-  align-self: center;
 }
 
 /* =========================================================================
- * empty state — globals の .empty-state を継承。図鑑用の文言枠だけ調整。
+ * empty state — globals の .empty-state を継承。図鑑用の枠だけ調整。
  * ========================================================================= */
 .empty-state {
   border: 1px dashed var(--border-strong);
@@ -658,59 +748,124 @@
 }
 
 /* =========================================================================
- * detail page — 作品詳細
+ * detail page — 箱の裏面（バックカバー）の体裁
  * ========================================================================= */
 .detail {
   padding: var(--sp-8) 0 var(--sp-16);
+  max-width: 60rem;
 }
 .breadcrumb {
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
   margin-bottom: var(--sp-5);
 }
-.detail-head {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-3);
+
+/* カバー面（天面バンド + 題字 + 規格表）= 拡大した箱 */
+.box-cover {
+  --type-h: var(--type-commercial-h);
+  position: relative;
+  border: 1px solid var(--border-strong);
+  border-left: 8px solid hsl(var(--type-h) 55% 44%);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow);
 }
-.detail-head h1 {
+.box-cover--doujin {
+  --type-h: var(--type-doujin-h);
+}
+.box-cover-lid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-6);
+  background: hsl(var(--type-h) 48% 92%);
+  color: hsl(var(--type-h) 60% 30%);
+  border-bottom: 1px solid hsl(var(--type-h) 40% 82%);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wide);
+}
+@media (prefers-color-scheme: dark) {
+  .box-cover-lid {
+    background: hsl(var(--type-h) 30% 20%);
+    color: hsl(var(--type-h) 60% 78%);
+    border-bottom-color: hsl(var(--type-h) 30% 28%);
+  }
+}
+.box-cover-type {
+  font-size: var(--fs-sm);
+}
+.box-cover-year {
+  font-size: var(--fs-sm);
+}
+.box-cover-body {
+  padding: var(--sp-8) var(--sp-6) var(--sp-6);
+}
+.box-cover-head h1 {
   margin: 0;
   font-size: clamp(var(--fs-xl), 5vw, var(--fs-2xl));
 }
-.detail-head .reading {
+.box-cover-head .reading {
+  display: block;
+  margin-top: var(--sp-2);
   color: var(--text-dim);
   font-size: var(--fs-md);
 }
-/* 仕様はカード面に載せて "資料カード" の手触りを出す */
-.spec-list {
+
+/* 拡大版スペックプレート（規格表をグリッドで並べる） */
+.spec-plate-lg {
   display: grid;
-  grid-template-columns: 8rem 1fr;
-  gap: var(--sp-3) var(--sp-5);
-  margin-top: var(--sp-6);
-  background: var(--surface);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  margin: var(--sp-8) 0 0;
+  background: var(--border);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  padding: var(--sp-6);
+  border-radius: var(--radius);
+  overflow: hidden;
 }
-.spec-list dt {
+@media (min-width: 600px) {
+  .spec-plate-lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.spec-plate-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: var(--sp-4);
+  background: var(--surface-sunken);
+}
+.spec-plate-cell dt {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
   color: var(--text-dim);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-semibold);
 }
-.spec-list dd {
+.spec-plate-cell dd {
   margin: 0;
+  font-weight: var(--fw-semibold);
   color: var(--text);
 }
-.spec-list dd.faint {
+.spec-plate-cell dd.faint {
   color: var(--text-faint);
+  font-weight: var(--fw-normal);
+}
+
+/* 箱の裏面（解説・中身・入手先・出典） */
+.detail-back {
+  margin-top: var(--sp-12);
 }
 .detail-section {
   margin-top: var(--sp-12);
 }
+.detail-section:first-child {
+  margin-top: 0;
+}
 .detail-section h2 {
   font-size: var(--fs-md);
   margin: 0 0 var(--sp-4);
+  padding-bottom: var(--sp-2);
+  border-bottom: 2px solid var(--border);
 }
 .detail-desc {
   max-width: 44em;
@@ -745,6 +900,11 @@
   color: var(--accent);
 }
 
+/* about ページ等で使う汎用 eyebrow/見出し（detail と共存） */
+.detail .eyebrow {
+  margin-bottom: var(--sp-3);
+}
+
 /* =========================================================================
  * footer note
  * ========================================================================= */
@@ -759,7 +919,7 @@
 }
 
 /* =========================================================================
- * visually hidden（ラベルの SR 提供用）
+ * visually hidden
  * ========================================================================= */
 .visually-hidden {
   position: absolute;
@@ -773,13 +933,9 @@
   border: 0;
 }
 
-/* reduced-motion: カード lift / アクセントラインを止める（globals が大半を担うが固有装飾も明示停止） */
+/* reduced-motion: 箱の引き出し lift を止める */
 @media (prefers-reduced-motion: reduce) {
-  .game-card:hover {
+  .game-box:hover {
     transform: none !important;
-  }
-  .game-card::before,
-  .game-card:hover::before {
-    transition: none !important;
   }
 }

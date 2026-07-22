@@ -1,0 +1,941 @@
+/* bgzukan — per-product テーマ層（製品の "顔" をここで作る）
+ *
+ * globals.css は共通の構造・a11y・コンポーネント挙動を持つ "出発点"。
+ * このファイルは globals.css の後に読み込まれ、:root トークンを上書きして
+ * カタログ固有の個性（色・温度感・形・密度）を与え、さらにカタログ専用の
+ * コンポーネントを足す。
+ *
+ * ■ この製品の構造コンセプト「ゲーム棚」
+ *   作品を均一なカードグリッドで並べない。雑誌的な題字（masthead）で始まり、
+ *   作品はゲーム箱の佇まいを持つ「箱（box-art）」として、棚（shelf）に陳列される。
+ *     - masthead : 大きく組んだ題字 + 罫線で並ぶ奥付（規模）
+ *     - filter-rail : 上部横長ツールバー（検索 + 絞り込み開閉）
+ *     - shelf : 種別ごと/検索結果の陳列棚。箱が「乗る」棚板を持つ
+ *     - box-art : 天面バンド(種別)・厚み(spine)・題字・スペック刻印・中身表記を持つ箱
+ *   温かいテラコッタ配色（卓を囲む遊びの熱量・紙と木の温度感）は活かす。
+ *
+ * ■ アクセシビリティ（全て WCAG AA 以上・light/dark 双方）
+ *   light: accent(#ba4021) vs white 5.46 / vs bg 5.41 / text-dim vs bg 5.17
+ *   dark : accent(#ec8065) vs bg 6.96 / accent-fg vs accent 6.77 / text-dim vs bg 7.51
+ *   種別バンド（商業=藍 / 同人=テラコッタ）も light/dark 双方で文字対比 ≥5.7。
+ */
+
+:root {
+  /* ===== accent: HSL を 1 か所で定義（tint/shade は globals が自動派生） ===== */
+  /* 温かいテラコッタ・バーミリオン。卓を囲む遊びの熱量。 */
+  --accent-h: 12;
+  --accent-s: 70%;
+  --accent-l: 43%;
+  --accent-fg: #ffffff;
+
+  /* ===== neutral: 暖色オフホワイト（紙・木のテーブルの温度感） ===== */
+  --neutral-hue: 30;
+  --neutral-chroma: 14%;
+
+  /* ===== 形・密度: 箱・棚らしい控えめな角丸。やや密に詰めて陳列感を出す。 ===== */
+  --radius-sm: 7px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --density: 1;
+
+  /* ===== カタログ固有: 欠損プレースホルダ専用の淡色 ===== */
+  --text-faint: hsl(var(--neutral-hue) 8% 56%);
+
+  /* ===== 種別の色（商業=落ち着いた藍 / 同人=温かいテラコッタ） ===== */
+  --type-commercial-h: 214;
+  --type-doujin-h: 12;
+  --badge-commercial-bg: hsl(214 50% 92%);
+  --badge-commercial-text: hsl(214 60% 32%);
+  --badge-doujin-bg: hsl(16 60% 91%);
+  --badge-doujin-text: hsl(12 64% 36%);
+
+  /* ===== 棚板（木目の面）の色。紙地よりわずかに濃い暖色面。 ===== */
+  --shelf-board: hsl(28 24% 84%);
+  --shelf-board-edge: hsl(26 26% 72%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-faint: hsl(var(--neutral-hue) 8% 48%);
+    --badge-commercial-bg: hsl(214 30% 22%);
+    --badge-commercial-text: hsl(214 55% 75%);
+    --badge-doujin-bg: hsl(14 35% 22%);
+    --badge-doujin-text: hsl(14 70% 74%);
+    --shelf-board: hsl(28 14% 20%);
+    --shelf-board-edge: hsl(26 16% 14%);
+  }
+}
+
+/* =========================================================================
+ * header brand — カタログのマーク＋名前
+ * ========================================================================= */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+  text-decoration: none;
+  color: var(--text);
+}
+.brand:hover {
+  color: var(--text);
+}
+/* サイコロ目をモチーフにした角丸マーク */
+.brand-mark-dice {
+  display: inline-grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex: none;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    var(--accent),
+    hsl(calc(var(--accent-h) + 24) var(--accent-s) calc(var(--accent-l) + 8%))
+  );
+  box-shadow: var(--shadow-accent);
+}
+.brand-mark-dice svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--accent-fg);
+}
+.brand-text {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.1;
+  gap: 1px;
+}
+.brand-name {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--tracking-snug);
+  white-space: nowrap;
+}
+.brand-tag {
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  letter-spacing: var(--tracking-snug);
+}
+@media (max-width: 560px) {
+  .brand-tag {
+    display: none;
+  }
+}
+.site-header .container > a:not(.brand) {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+.site-header .container > a:not(.brand):hover {
+  color: var(--accent);
+}
+
+/* =========================================================================
+ * masthead — 雑誌の表紙のような題字（hero ではない）
+ * ========================================================================= */
+.masthead {
+  position: relative;
+  isolation: isolate;
+  border-bottom: 2px solid var(--text);
+  background: var(--surface);
+  overflow: hidden;
+}
+/* 紙地に極薄の暖色グラデ（卓上の照明感）。装飾なので aria 非対象。 */
+.masthead::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+    70% 120% at 92% 0%,
+    hsl(var(--accent-h) var(--accent-s) 58% / 0.12),
+    transparent 70%
+  );
+}
+.masthead-inner {
+  padding-block: clamp(var(--sp-8), 6vw, var(--sp-16)) var(--sp-8);
+}
+.masthead-kicker {
+  margin: 0;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--accent);
+  text-transform: none;
+}
+.masthead-title {
+  margin: var(--sp-2) 0 0;
+  font-family: var(--font-display);
+  /* 表紙ロゴらしい巨大な題字 */
+  font-size: clamp(3.2rem, 13vw, 7rem);
+  font-weight: var(--fw-black);
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  color: var(--text);
+}
+.masthead-title-accent {
+  color: var(--accent);
+}
+.masthead-sub {
+  margin-top: var(--sp-5);
+  max-width: 54ch;
+  font-size: var(--fs-md);
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+
+/* 奥付（colophon）: 罫線で区切った定規目盛り風の規模表記 */
+.colophon {
+  display: flex;
+  flex-wrap: wrap;
+  margin: var(--sp-8) 0 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  overflow: hidden;
+  width: fit-content;
+  max-width: 100%;
+}
+.colophon-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-3) var(--sp-6);
+  border-right: 1px solid var(--border);
+}
+.colophon-cell:last-child {
+  border-right: none;
+}
+.colophon-cell dt {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-dim);
+}
+.colophon-cell dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-black);
+  color: var(--text);
+  line-height: 1.1;
+}
+
+/* =========================================================================
+ * filter-rail — 上部横長ツールバー（検索 + 絞り込み開閉）
+ * ========================================================================= */
+.filter-rail {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: stretch;
+  margin-top: var(--sp-8);
+  margin-bottom: var(--sp-3);
+}
+.search {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.search-icon {
+  position: absolute;
+  left: var(--sp-4);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.2rem;
+  height: 1.2rem;
+  color: var(--text-dim);
+  pointer-events: none;
+  z-index: 1;
+}
+.search input[type="search"] {
+  min-height: 50px;
+  font-size: var(--fs-base);
+  padding-left: 2.9rem;
+  padding-right: 2.9rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.search input[type="search"]::-webkit-search-decoration,
+.search input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search-clear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-md);
+  line-height: 1;
+  transition:
+    color var(--transition),
+    background var(--transition);
+}
+.search-clear:hover {
+  color: var(--text);
+  background: var(--surface-2);
+}
+/* 絞り込みトグル: 棚の「分類タブを開く」ボタン */
+.filter-toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 50px;
+  padding: 0 var(--sp-5);
+  font: inherit;
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-sm);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition:
+    background var(--transition),
+    border-color var(--transition);
+}
+.filter-toggle svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.filter-toggle:hover {
+  background: var(--surface-2);
+  border-color: var(--border-strong);
+}
+.filter-toggle[aria-expanded="true"] {
+  background: var(--accent-tint);
+  color: var(--accent);
+  border-color: transparent;
+}
+
+/* 適用中の条件（ツールバー直下・付箋の体） */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  align-items: center;
+  margin-bottom: var(--sp-4);
+}
+.active-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  padding: 4px 4px 4px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-tint);
+  color: var(--accent);
+  border: 1px solid transparent;
+}
+.active-chip button {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-sm);
+  line-height: 1;
+  transition: background var(--transition);
+}
+.active-chip button:hover {
+  background: hsl(var(--accent-h) var(--accent-s) 50% / 0.22);
+}
+.clear-all {
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--radius-sm);
+}
+.clear-all:hover {
+  color: var(--accent-hover);
+}
+
+/* =========================================================================
+ * filter-panel — 絞り込み（インライン押し出し式の分類タブ群）
+ * ========================================================================= */
+.filter-panel {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+/* React は hidden 属性で開閉する。明示 display が UA の [hidden]{display:none} を
+   上書きしてしまうため、hidden を明示的に尊重する（閉時は確実に隠す）。 */
+.filter-panel[hidden] {
+  display: none;
+}
+.filter-panel {
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-6);
+  padding: var(--sp-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+@media (min-width: 720px) {
+  .filter-panel {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-6);
+  }
+  .filter-group--tags {
+    grid-column: 1 / -1;
+  }
+}
+.filter-group {
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.filter-group legend {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  padding: 0;
+  margin-bottom: var(--sp-3);
+}
+.chip-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+.chip-cloud--scroll {
+  max-height: 11rem;
+  overflow-y: auto;
+  padding: 2px;
+}
+/* チップ（実体は checkbox を label で包む＝ネイティブ操作・SR 堅牢） */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 44px; /* タップターゲット 44px 確保 */
+  padding: var(--sp-1) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    color var(--transition);
+}
+.chip:hover {
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+.chip input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+}
+.chip:has(input:checked) {
+  border-color: transparent;
+  background: var(--accent-tint);
+  color: var(--accent);
+  font-weight: var(--fw-semibold);
+}
+.chip:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.chip-count {
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+.chip:has(input:checked) .chip-count {
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+/* =========================================================================
+ * result count
+ * ========================================================================= */
+.result-count {
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  margin: 0 0 var(--sp-6);
+}
+.result-count strong {
+  color: var(--text);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+}
+
+/* =========================================================================
+ * shelves / shelf — 陳列棚
+ * ========================================================================= */
+.shelves {
+  padding-bottom: var(--sp-16);
+}
+.shelf {
+  margin-top: var(--sp-12);
+}
+.shelf:first-of-type {
+  margin-top: 0;
+}
+/* 棚見出し: 木札のようなタブ + 件数 */
+.shelf-label {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.shelf-label-tab {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--tracking-snug);
+  color: var(--text);
+  padding: var(--sp-1) var(--sp-4);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-bottom: 3px solid var(--accent);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+.shelf-label-count {
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  font-weight: var(--fw-semibold);
+}
+
+/* 棚の段（箱が並ぶ列 + その下の棚板） */
+.shelf-row {
+  position: relative;
+}
+/* 箱のラック（陳列）。狭幅では縦積み、広幅では行に詰めて棚に並べる。 */
+.box-rack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-4);
+}
+@media (min-width: 460px) {
+  .box-rack {
+    grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+    gap: var(--sp-5) var(--sp-4);
+  }
+}
+.box-slot {
+  display: flex;
+}
+/* 棚板（box が乗る木の面）。箱の下端から少しはみ出して "棚に乗る" 見え方を作る。 */
+.shelf-board {
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  background: linear-gradient(
+    180deg,
+    var(--shelf-board),
+    var(--shelf-board-edge)
+  );
+  box-shadow:
+    inset 0 1px 0 hsl(0 0% 100% / 0.18),
+    0 6px 10px hsl(28 30% 30% / 0.14);
+}
+@media (prefers-color-scheme: dark) {
+  .shelf-board {
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.05),
+      0 6px 12px hsl(0 0% 0% / 0.5);
+  }
+}
+
+/* =========================================================================
+ * game-box — 棚に並ぶゲーム箱（ボックスアート）
+ * ========================================================================= */
+.game-box {
+  --type-h: var(--type-commercial-h);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background: var(--surface);
+  /* 箱の縁（厚紙の角）。上は天面バンドで覆うので角丸は下寄り。 */
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: var(--text);
+  overflow: hidden;
+  /* 箱の "立ち上がり"。棚に置かれた厚みのある箱の影。 */
+  box-shadow:
+    0 1px 0 var(--border-strong),
+    var(--shadow-sm);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition);
+}
+.game-box--doujin {
+  --type-h: var(--type-doujin-h);
+}
+/* 箱の厚み（spine）: 左辺に貼った種別色の背 */
+.box-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--type-h) 55% 48%),
+    hsl(var(--type-h) 55% 40%)
+  );
+}
+/* 手に取る手応え: 棚から少し引き出す lift */
+.game-box:hover {
+  transform: translateY(-5px);
+  color: var(--text);
+  box-shadow:
+    0 1px 0 var(--border-strong),
+    var(--shadow-lg);
+}
+
+/* 箱の天面バンド（種別を刷る） */
+.box-lid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3) var(--sp-2) calc(6px + var(--sp-3));
+  background: hsl(var(--type-h) 48% 92%);
+  color: hsl(var(--type-h) 60% 30%);
+  border-bottom: 1px solid hsl(var(--type-h) 40% 82%);
+}
+@media (prefers-color-scheme: dark) {
+  .box-lid {
+    background: hsl(var(--type-h) 30% 20%);
+    color: hsl(var(--type-h) 60% 78%);
+    border-bottom-color: hsl(var(--type-h) 30% 28%);
+  }
+}
+.box-lid-type {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wide);
+}
+.box-lid-year {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  opacity: 0.85;
+}
+
+/* 箱の表面 */
+.box-face {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  padding: var(--sp-4) var(--sp-4) var(--sp-4) calc(6px + var(--sp-4));
+  flex: 1 1 auto;
+}
+.box-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--tracking-snug);
+  line-height: var(--lh-snug);
+  color: var(--text);
+}
+.box-reading {
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+/* スペック刻印プレート（規格表記の体・箱面下部に押す） */
+.spec-plate {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+  padding: var(--sp-1) var(--sp-3);
+  background: var(--surface-sunken);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+.spec-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-sm);
+  color: var(--text-soft);
+}
+.spec-cell svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--text-dim);
+  flex: none;
+}
+.spec-cell .num {
+  color: var(--text);
+  font-weight: var(--fw-semibold);
+}
+.spec-div {
+  width: 1px;
+  align-self: stretch;
+  background: var(--border-strong);
+}
+
+/* 箱裏の「中身」表記（メカニクス・カテゴリ） */
+.box-contents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  padding: 0 var(--sp-4) var(--sp-4) calc(6px + var(--sp-4));
+  margin-top: auto;
+}
+.content-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--text-soft);
+  border: 1px solid var(--border);
+}
+.content-more {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text-dim);
+}
+
+/* =========================================================================
+ * empty state — globals の .empty-state を継承。図鑑用の枠だけ調整。
+ * ========================================================================= */
+.empty-state {
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+/* =========================================================================
+ * detail page — 箱の裏面（バックカバー）の体裁
+ * ========================================================================= */
+.detail {
+  padding: var(--sp-8) 0 var(--sp-16);
+  max-width: 60rem;
+}
+.breadcrumb {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  margin-bottom: var(--sp-5);
+}
+
+/* カバー面（天面バンド + 題字 + 規格表）= 拡大した箱 */
+.box-cover {
+  --type-h: var(--type-commercial-h);
+  position: relative;
+  border: 1px solid var(--border-strong);
+  border-left: 8px solid hsl(var(--type-h) 55% 44%);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.box-cover--doujin {
+  --type-h: var(--type-doujin-h);
+}
+.box-cover-lid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-6);
+  background: hsl(var(--type-h) 48% 92%);
+  color: hsl(var(--type-h) 60% 30%);
+  border-bottom: 1px solid hsl(var(--type-h) 40% 82%);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-wide);
+}
+@media (prefers-color-scheme: dark) {
+  .box-cover-lid {
+    background: hsl(var(--type-h) 30% 20%);
+    color: hsl(var(--type-h) 60% 78%);
+    border-bottom-color: hsl(var(--type-h) 30% 28%);
+  }
+}
+.box-cover-type {
+  font-size: var(--fs-sm);
+}
+.box-cover-year {
+  font-size: var(--fs-sm);
+}
+.box-cover-body {
+  padding: var(--sp-8) var(--sp-6) var(--sp-6);
+}
+.box-cover-head h1 {
+  margin: 0;
+  font-size: clamp(var(--fs-xl), 5vw, var(--fs-2xl));
+}
+.box-cover-head .reading {
+  display: block;
+  margin-top: var(--sp-2);
+  color: var(--text-dim);
+  font-size: var(--fs-md);
+}
+
+/* 拡大版スペックプレート（規格表をグリッドで並べる） */
+.spec-plate-lg {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  margin: var(--sp-8) 0 0;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+@media (min-width: 600px) {
+  .spec-plate-lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.spec-plate-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: var(--sp-4);
+  background: var(--surface-sunken);
+}
+.spec-plate-cell dt {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-dim);
+}
+.spec-plate-cell dd {
+  margin: 0;
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+}
+.spec-plate-cell dd.faint {
+  color: var(--text-faint);
+  font-weight: var(--fw-normal);
+}
+
+/* 箱の裏面（解説・中身・入手先・出典） */
+.detail-back {
+  margin-top: var(--sp-12);
+}
+.detail-section {
+  margin-top: var(--sp-12);
+}
+.detail-section:first-child {
+  margin-top: 0;
+}
+.detail-section h2 {
+  font-size: var(--fs-md);
+  margin: 0 0 var(--sp-4);
+  padding-bottom: var(--sp-2);
+  border-bottom: 2px solid var(--border);
+}
+.detail-desc {
+  max-width: 44em;
+  line-height: var(--lh-base);
+  color: var(--text-soft);
+}
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+.link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.link-list a {
+  word-break: break-word;
+  font-weight: var(--fw-semibold);
+}
+.source-list {
+  font-size: var(--fs-sm);
+}
+.source-list a {
+  color: var(--text-dim);
+  font-weight: var(--fw-normal);
+}
+.source-list a:hover {
+  color: var(--accent);
+}
+
+/* about ページ等で使う汎用 eyebrow/見出し（detail と共存） */
+.detail .eyebrow {
+  margin-bottom: var(--sp-3);
+}
+
+/* =========================================================================
+ * footer note
+ * ========================================================================= */
+.footer-note {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  max-width: 64ch;
+}
+.footer-note p {
+  margin: 0;
+}
+
+/* =========================================================================
+ * visually hidden
+ * ========================================================================= */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* reduced-motion: 箱の引き出し lift を止める */
+@media (prefers-reduced-motion: reduce) {
+  .game-box:hover {
+    transform: none !important;
+  }
+}

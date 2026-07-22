@@ -1,0 +1,523 @@
+[
+  {
+    "id": "love-letter",
+    "title": "ラブレター",
+    "reading": "らぶれたー",
+    "type": "同人・インディー",
+    "designer": "カナイセイジ",
+    "publisher": "カナイ製作所／アークライト",
+    "players": { "min": 2, "max": 4 },
+    "time": { "min": 5, "max": 10 },
+    "minAge": 10,
+    "year": 2012,
+    "firstEvent": "ゲームマーケット2012春",
+    "mechanics": ["正体隠匿", "手札運用", "推理", "脱落"],
+    "categories": ["心理戦", "パーティー", "カードゲーム"],
+    "description": "手札はつねに1枚、引いたもう1枚との2択を毎ターン迫られるミニマルなカードゲーム。8種のカード効果を読み合い、誰が何を持っているかを推理して姫への恋文を最後まで生き残らせる。ワンコインの同人作として登場し、世界的ヒットになった日本発の代表的なカードゲーム。",
+    "officialUrl": "https://arclightgames.jp/product/246loveletter/",
+    "sources": ["https://arclightgames.jp/product/246loveletter/"],
+    "shops": [
+      {
+        "name": "アークライト公式",
+        "url": "https://arclightgames.jp/product/246loveletter/"
+      }
+    ]
+  },
+  {
+    "id": "ito",
+    "title": "ito",
+    "reading": "いと",
+    "type": "商業",
+    "designer": "326（ナカムラミツル）",
+    "publisher": "アークライト",
+    "players": { "min": 2, "max": 10 },
+    "time": { "min": 30, "max": 30 },
+    "minAge": 8,
+    "year": 2019,
+    "firstEvent": null,
+    "mechanics": ["協力", "数値表現", "順序当て"],
+    "categories": ["パーティー", "協力", "コミュニケーション"],
+    "description": "手札の1〜100の数字を、お題に沿った言葉で表現し合い、全員で小さい順に並べていく協力ゲーム。「この数字なら何と言うか」の感覚を共有できるかが鍵で、価値観のズレや一致に盛り上がる。会話だけで成立する手軽さが魅力。",
+    "officialUrl": "https://arclightgames.jp/product/ito/",
+    "sources": ["https://arclightgames.jp/product/ito/"],
+    "shops": [
+      {
+        "name": "アークライト公式",
+        "url": "https://arclightgames.jp/product/ito/"
+      }
+    ]
+  },
+  {
+    "id": "machi-koro",
+    "title": "街コロ",
+    "reading": "まちころ",
+    "type": "商業",
+    "designer": "菅沼正夫",
+    "publisher": "グラウンディング",
+    "players": { "min": 2, "max": 4 },
+    "time": { "min": 30, "max": 30 },
+    "minAge": 7,
+    "year": 2012,
+    "firstEvent": null,
+    "mechanics": ["ダイスロール", "出目連動", "拡大再生産"],
+    "categories": ["ファミリー", "経済", "街づくり"],
+    "description": "サイコロを振って施設からの収入を得ながら、自分の街を発展させていくダイスゲーム。出目に反応する施設を組み合わせてコンボを作り、いち早く4つのランドマークを建てた人が勝ち。日本発のタイトルとして海外版も展開され、続編や拡張も作られている人気作。",
+    "officialUrl": "https://www.g-rounding.com/",
+    "sources": [
+      "https://www.g-rounding.com/",
+      "https://gamemarket.jp/game/185919"
+    ],
+    "shops": [
+      { "name": "グラウンディング公式", "url": "https://www.g-rounding.com/" }
+    ]
+  },
+  {
+    "id": "hannin-wa-odoru",
+    "title": "犯人は踊る",
+    "reading": "はんにんはおどる",
+    "type": "同人・インディー",
+    "designer": "鍋野ぺす",
+    "publisher": "鍋野企画",
+    "players": { "min": 3, "max": 8 },
+    "time": { "min": 10, "max": 20 },
+    "minAge": 8,
+    "year": 2013,
+    "firstEvent": "ゲームマーケット2013",
+    "mechanics": ["正体隠匿", "手札交換", "推理"],
+    "categories": ["パーティー", "ミステリー", "カードゲーム"],
+    "description": "1枚の「犯人」カードが手札交換で全員の間を秘密裏に巡っていき、最後に持っていた人が捕まる正体隠匿ゲーム。各カードの効果で手札を回し合い、誰が犯人を抱えているかを読む駆け引きが楽しい。短時間で大人数でも遊べる定番パーティー作。",
+    "officialUrl": "https://sugorokuya.jp/p/hannin-ha-odoru",
+    "sources": ["https://sugorokuya.jp/p/hannin-ha-odoru"],
+    "shops": [
+      { "name": "すごろくや", "url": "https://sugorokuya.jp/p/hannin-ha-odoru" }
+    ]
+  },
+  {
+    "id": "word-basket",
+    "title": "ワードバスケット",
+    "reading": "わーどばすけっと",
+    "type": "商業",
+    "designer": "小林俊雄",
+    "publisher": "メビウスゲームズ",
+    "players": { "min": 2, "max": 8 },
+    "time": { "min": 10, "max": 10 },
+    "minAge": 10,
+    "year": null,
+    "firstEvent": null,
+    "mechanics": ["リアルタイム", "言葉遊び", "しりとり"],
+    "categories": ["パーティー", "言葉", "リアルタイム"],
+    "description": "場の文字で始まり手札の文字で終わる言葉を思いついたら即座に言って手札を捨てる、リアルタイムのしりとりカードゲーム。順番はなく早い者勝ちなので、瞬発力と語彙が試される。手札を最初に出し切った人が勝ち。",
+    "officialUrl": "https://www.mobius-games.co.jp/mobiusgames/wordbasket.html",
+    "sources": ["https://www.mobius-games.co.jp/mobiusgames/wordbasket.html"],
+    "shops": [
+      {
+        "name": "メビウスゲームズ公式",
+        "url": "https://www.mobius-games.co.jp/mobiusgames/wordbasket.html"
+      }
+    ]
+  },
+  {
+    "id": "deep-sea-adventure",
+    "title": "海底探険",
+    "reading": "かいていたんけん",
+    "type": "商業",
+    "designer": "佐々木隼・佐々木吾朗",
+    "publisher": "オインクゲームズ",
+    "players": { "min": 2, "max": 6 },
+    "time": { "min": 30, "max": 30 },
+    "minAge": 8,
+    "year": 2014,
+    "firstEvent": null,
+    "mechanics": ["すごろく", "プッシュユアラック", "共有リソース"],
+    "categories": ["小箱", "ファミリー", "ジレンマ"],
+    "description": "オンボロ潜水艦で深海の財宝を狙うすごろくゲーム。全員で1本の酸素を共有し、財宝を持つほど消費が早まる。欲張りすぎて帰還前に酸素が尽きれば、抱えた財宝はすべて失う。小箱に詰まった悩ましいジレンマが魅力の代表作。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/deep-sea-adventure/",
+    "sources": ["https://oinkgames.com/ja/games/analog/deep-sea-adventure/"],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/deep-sea-adventure/"
+      }
+    ]
+  },
+  {
+    "id": "in-a-grove",
+    "title": "藪の中",
+    "reading": "やぶのなか",
+    "type": "商業",
+    "designer": "佐々木隼",
+    "publisher": "オインクゲームズ",
+    "players": { "min": 2, "max": 5 },
+    "time": { "min": 20, "max": 20 },
+    "minAge": 9,
+    "year": 2021,
+    "firstEvent": null,
+    "mechanics": ["推理", "ブラフ", "情報の非対称"],
+    "categories": ["推理", "心理戦", "ブラフ"],
+    "description": "芥川龍之介の小説に着想を得た推理＆ブラフゲーム。自分だけが見えるタイル・全員が見えるタイル・誰も見えないタイルを手がかりに、限られた情報から真犯人を導く。互いを欺き合いながら真相に迫る読み合いが核となる新版。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/in-a-grove-new/",
+    "sources": ["https://oinkgames.com/ja/games/analog/in-a-grove-new/"],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/in-a-grove-new/"
+      }
+    ]
+  },
+  {
+    "id": "nine-tiles",
+    "title": "ナインタイル",
+    "reading": "ないんたいる",
+    "type": "商業",
+    "designer": null,
+    "publisher": "オインクゲームズ",
+    "players": { "min": 2, "max": 4 },
+    "time": { "min": 15, "max": 15 },
+    "minAge": 6,
+    "year": 2015,
+    "firstEvent": null,
+    "mechanics": ["リアルタイム", "パズル", "記憶"],
+    "categories": ["小箱", "ファミリー", "リアルタイム"],
+    "description": "両面に異なる絵柄が描かれた9枚のタイルを、めくったりずらしたりしてお題と同じ並びに最速で揃える早解きパズル。順番待ちがなく全員同時に手を動かすので、瞬間の判断力と裏面を覚える記憶力が試される。子どもから大人まで白熱する。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/nine-tiles/",
+    "sources": ["https://oinkgames.com/ja/games/analog/nine-tiles/"],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/nine-tiles/"
+      }
+    ]
+  },
+  {
+    "id": "bob-jiten",
+    "title": "ボブジテン",
+    "reading": "ぼぶじてん",
+    "type": "同人・インディー",
+    "designer": "Kazuna*",
+    "publisher": "TUKAPON",
+    "players": { "min": 3, "max": 8 },
+    "time": { "min": 10, "max": 10 },
+    "minAge": 10,
+    "year": 2017,
+    "firstEvent": "ゲームマーケット2017春",
+    "mechanics": ["言葉遊び", "クイズ", "説明"],
+    "categories": ["パーティー", "言葉", "コミュニケーション"],
+    "description": "カタカナ語が大好きな日本人「ボブ」になりきり、お題のカタカナ語をカタカナを一切使わず日本語だけで説明する大喜利系カードゲーム。言い換えに四苦八苦する様子が笑いを誘い、当てた人と説明した人の双方に得点が入る。",
+    "officialUrl": null,
+    "sources": ["https://item.rakuten.co.jp/boardgame-sugorokuya/180035/"],
+    "shops": [
+      {
+        "name": "すごろくや（楽天）",
+        "url": "https://item.rakuten.co.jp/boardgame-sugorokuya/180035/"
+      }
+    ]
+  },
+  {
+    "id": "word-wolf",
+    "title": "ワードウルフ",
+    "reading": "わーどうるふ",
+    "type": "商業",
+    "designer": "川崎晋",
+    "publisher": "幻冬舎",
+    "players": { "min": 2, "max": 8 },
+    "time": { "min": 5, "max": 10 },
+    "minAge": 8,
+    "year": 2020,
+    "firstEvent": null,
+    "mechanics": ["正体隠匿", "会話", "推理"],
+    "categories": ["パーティー", "正体隠匿", "コミュニケーション"],
+    "description": "多数派と少数派にこっそり別々のお題が配られ、会話の中から自分と違うお題を持つ「ワードウルフ」を探し出す言葉版の人狼ゲーム。直接お題を言わずに探り合う会話の妙が肝で、少人数からでも手軽に盛り上がれる。",
+    "officialUrl": "https://www.gentosha-edu.co.jp/book/b506749.html",
+    "sources": ["https://www.gentosha-edu.co.jp/book/b506749.html"],
+    "shops": [
+      {
+        "name": "幻冬舎edu",
+        "url": "https://www.gentosha-edu.co.jp/book/b506749.html"
+      }
+    ]
+  },
+  {
+    "id": "tragedy-rooper",
+    "title": "惨劇RoopeR",
+    "reading": "さんげきるーぱー",
+    "type": "同人・インディー",
+    "designer": "BakaFire",
+    "publisher": "BakaFire Party",
+    "players": { "min": 2, "max": 4 },
+    "time": { "min": 60, "max": 240 },
+    "minAge": 15,
+    "year": 2013,
+    "firstEvent": null,
+    "mechanics": ["ループ", "推理", "正体隠匿", "非対称"],
+    "categories": ["ミステリー", "推理", "シナリオ型"],
+    "description": "脚本家1人と主人公側プレイヤーが対決する、タイムループを題材にした非対称型の推理ボードゲーム。主人公側はループを繰り返しながら盤上のキャラの役割や事件の真相を読み解き、惨劇の回避を目指す。重厚なストーリー体験が魅力の同人発タイトル。",
+    "officialUrl": "http://bakafire.main.jp/rooper/sr_game_01_what.htm",
+    "sources": ["http://bakafire.main.jp/rooper/sr_game_01_what.htm"],
+    "shops": [
+      {
+        "name": "BakaFire Party公式",
+        "url": "http://bakafire.main.jp/top.html"
+      }
+    ]
+  },
+  {
+    "id": "a-fake-artist-goes-to-new-york",
+    "title": "エセ芸術家ニューヨークへ行く",
+    "reading": "えせげいじゅつかにゅーよーくへいく",
+    "type": "商業",
+    "designer": "佐々木隼",
+    "publisher": "オインクゲームズ",
+    "players": { "min": 5, "max": 10 },
+    "time": { "min": 20, "max": 20 },
+    "minAge": 8,
+    "year": 2011,
+    "firstEvent": null,
+    "mechanics": ["お絵描き", "正体隠匿", "投票"],
+    "categories": ["小箱", "パーティー"],
+    "description": "1人だけお題を知らない「エセ芸術家」が紛れ込む正体隠匿のお絵描きゲーム。参加者は1本ずつ線を描き足し、誰がエセ芸術家かを投票で当てる。お題が露骨に伝わると本人にバレてしまうため、絶妙な描き方が求められる。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/a-fake-artist-goes-to-new-york/",
+    "sources": [
+      "https://oinkgames.com/ja/games/analog/a-fake-artist-goes-to-new-york/"
+    ],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/a-fake-artist-goes-to-new-york/"
+      }
+    ]
+  },
+  {
+    "id": "maskmen",
+    "title": "マスクメン",
+    "reading": "ますくめん",
+    "type": "商業",
+    "designer": "佐々木隼・新澤大樹",
+    "publisher": "オインクゲームズ",
+    "players": { "min": 2, "max": 6 },
+    "time": { "min": 20, "max": 20 },
+    "minAge": 9,
+    "year": 2014,
+    "firstEvent": null,
+    "mechanics": ["手札管理", "強弱推理", "正体隠匿"],
+    "categories": ["小箱", "カードゲーム"],
+    "description": "覆面レスラーの興行を組むカードゲーム。各レスラーの強さは開始時には未確定で、上に重ねて出した側が強いと後から決まっていく。強弱が確定していないカードは複数枚出せるなど、出す順番の駆け引きが鍵になる。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/maskmen/",
+    "sources": ["https://oinkgames.com/ja/games/analog/maskmen/"],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/maskmen/"
+      }
+    ]
+  },
+  {
+    "id": "troll",
+    "title": "トロル",
+    "reading": "とろる",
+    "type": "商業",
+    "designer": "ドロッセルマイヤー商會・佐々木隼",
+    "publisher": "オインクゲームズ",
+    "players": { "min": 3, "max": 5 },
+    "time": { "min": 20, "max": 20 },
+    "minAge": 8,
+    "year": 2015,
+    "firstEvent": null,
+    "mechanics": ["ブラフ", "心理戦", "プッシュユアラック"],
+    "categories": ["小箱", "カードゲーム"],
+    "description": "トロルの住処に忍び込んで宝石を盗む盗賊たちの心理戦ゲーム。物見からの情報をもとに、欲張って多く盗むか発見されるリスクを避けるかを選ぶ。他の盗賊の取り分を読んで自分の行動を決める駆け引きが核となる。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/troll/",
+    "sources": ["https://oinkgames.com/ja/games/analog/troll/"],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/troll/"
+      }
+    ]
+  },
+  {
+    "id": "insider-game",
+    "title": "インサイダー・ゲーム",
+    "reading": "いんさいだーげーむ",
+    "type": "商業",
+    "designer": "team Insiderrrr",
+    "publisher": "オインクゲームズ",
+    "players": { "min": 4, "max": 8 },
+    "time": { "min": 15, "max": 15 },
+    "minAge": 9,
+    "year": 2016,
+    "firstEvent": null,
+    "mechanics": ["正体隠匿", "質問推理", "議論"],
+    "categories": ["小箱", "パーティー", "コミュニケーション"],
+    "description": "Yes/Noの質問でお題を当てる協力要素と、その中に紛れた裏切り者を見つける正体隠匿を組み合わせたパーティーゲーム。正解を知る「インサイダー」は議論を正解へ誘導しつつ正体を隠す。お題を当てた後、誰がインサイダーかを話し合いで暴く。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/insider/",
+    "sources": ["https://oinkgames.com/ja/games/analog/insider/"],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/insider/"
+      }
+    ]
+  },
+  {
+    "id": "the-pyramids-deadline",
+    "title": "死ぬまでにピラミッド",
+    "reading": "しぬまでにぴらみっど",
+    "type": "商業",
+    "designer": "佐々木隼",
+    "publisher": "オインクゲームズ",
+    "players": { "min": 2, "max": 6 },
+    "time": { "min": 20, "max": 20 },
+    "minAge": 8,
+    "year": 2016,
+    "firstEvent": null,
+    "mechanics": ["タイル配置", "パズル", "ダイス"],
+    "categories": ["小箱", "ファミリー"],
+    "description": "古代エジプトの建築家として、王が死ぬまでに最大の墓を建てることを競うパズルゲーム。三角ピースを選んでピラミッドを組み上げるが、大きく作りすぎて間に合わないと敗北し、小さすぎても勝てない。王の寿命は皆の選ぶ資材によって変動する。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/the-pyramids-deadline/",
+    "sources": ["https://oinkgames.com/ja/games/analog/the-pyramids-deadline/"],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/the-pyramids-deadline/"
+      }
+    ]
+  },
+  {
+    "id": "startups",
+    "title": "スタートアップス",
+    "reading": "すたーとあっぷす",
+    "type": "商業",
+    "designer": "佐々木隼",
+    "publisher": "オインクゲームズ",
+    "players": { "min": 3, "max": 7 },
+    "time": { "min": 20, "max": 20 },
+    "minAge": 10,
+    "year": 2017,
+    "firstEvent": null,
+    "mechanics": ["セット収集", "心理戦", "手札管理"],
+    "categories": ["小箱", "カードゲーム"],
+    "description": "6つの新興企業に出資する投資家となり、ゲーム終了時に1社のカードを最も多く握っている人が利益を得るゲーム。限られた資金と3枚の手札をやりくりし、相手の動きを読んで有望な投資先を見極める。運と思考のバランスが楽しめる。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/startups/",
+    "sources": ["https://oinkgames.com/ja/games/analog/startups/"],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/startups/"
+      }
+    ]
+  },
+  {
+    "id": "moon-adventure",
+    "title": "月面探険",
+    "reading": "げつめんたんけん",
+    "type": "商業",
+    "designer": "佐々木隼",
+    "publisher": "オインクゲームズ",
+    "players": { "min": 2, "max": 5 },
+    "time": { "min": 40, "max": 40 },
+    "minAge": 10,
+    "year": 2021,
+    "firstEvent": null,
+    "mechanics": ["協力", "ダイス", "手札管理"],
+    "categories": ["協力", "ファミリー"],
+    "description": "磁気嵐で月に取り残された宇宙飛行士たちが、散らばった物資を回収して基地へ帰還することを目指す協力ゲーム。毎ターン酸素カードでダイスを振り、移動・回収・ルート建設などを行う。全員の酸素が尽きないよう協力してミッションを達成する。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/moon-adventure/",
+    "sources": ["https://oinkgames.com/ja/games/analog/moon-adventure/"],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/moon-adventure/"
+      }
+    ]
+  },
+  {
+    "id": "scout",
+    "title": "SCOUT",
+    "reading": "すかうと",
+    "type": "商業",
+    "designer": "梶野桂",
+    "publisher": "オインクゲームズ",
+    "players": { "min": 2, "max": 5 },
+    "time": { "min": 20, "max": 20 },
+    "minAge": 9,
+    "year": 2021,
+    "firstEvent": null,
+    "mechanics": ["手札管理", "セット収集", "ドラフト"],
+    "categories": ["小箱", "カードゲーム"],
+    "description": "サーカスの団長となり最高のショーを作ることを競うカードゲーム。手札は並び替えられず、同じ数字や連番を「ショー」として出すか、他人の場札から「スカウト」して取り込む。1枚のスカウトが連鎖を生み、無敵の手役に化けることもある。",
+    "officialUrl": "https://oinkgames.com/ja/games/analog/scout/",
+    "sources": ["https://oinkgames.com/ja/games/analog/scout/"],
+    "shops": [
+      {
+        "name": "オインクゲームズ公式",
+        "url": "https://oinkgames.com/ja/games/analog/scout/"
+      }
+    ]
+  },
+  {
+    "id": "genkai-shiritori-party",
+    "title": "限界しりとりパーティー！",
+    "reading": "げんかいしりとりぱーてぃー",
+    "type": "同人・インディー",
+    "designer": "QuizKnock（監修）",
+    "publisher": "JELLY JELLY GAMES",
+    "players": { "min": 2, "max": 6 },
+    "time": { "min": 10, "max": 10 },
+    "minAge": 8,
+    "year": 2019,
+    "firstEvent": "ゲームマーケット2019秋",
+    "mechanics": ["言葉遊び", "しりとり", "リアルタイム"],
+    "categories": ["パーティー", "言葉", "カードゲーム"],
+    "description": "カードに示された文字数ぴったりの言葉でしりとりをつなぐワードゲーム。みんなでワイワイ遊ぶパーティルールと1対1のエキスパートルールが用意されている。クイズ集団QuizKnock監修で、頭の回転と語彙が試される短時間の言葉遊び。",
+    "officialUrl": "https://jelly2games.com/genkai",
+    "sources": ["https://jelly2games.com/genkai"],
+    "shops": [
+      {
+        "name": "JELLY JELLY STORE",
+        "url": "https://shop.jellyjellycafe.com/products/detail/1502"
+      }
+    ]
+  },
+  {
+    "id": "senryo-actor",
+    "title": "千両アクター",
+    "reading": "せんりょうあくたー",
+    "type": "同人・インディー",
+    "designer": null,
+    "publisher": "JELLY JELLY GAMES",
+    "players": { "min": 3, "max": 6 },
+    "time": { "min": 10, "max": 10 },
+    "minAge": 10,
+    "year": null,
+    "firstEvent": null,
+    "mechanics": ["即興演技", "NGワード回避", "会話"],
+    "categories": ["パーティー", "演技", "コミュニケーション"],
+    "description": "それぞれに配られた役になりきって即興の劇を演じつつ、自分のNGワードを言わないように立ち回る会話パーティーゲーム。NGワードを避けながら最も役になりきった人が勝つ。JELLY JELLY GAMESが企画・監修した爆笑系の演技ゲーム。",
+    "officialUrl": "https://jelly2games.com/",
+    "sources": ["https://jelly2games.com/"],
+    "shops": [
+      { "name": "JELLY JELLY GAMES公式", "url": "https://jelly2games.com/" }
+    ]
+  },
+  {
+    "id": "factoria",
+    "title": "ファクトリア",
+    "reading": "ふぁくとりあ",
+    "type": "同人・インディー",
+    "designer": "赤瀬よぐ",
+    "publisher": "サニーバード",
+    "players": { "min": 2, "max": 6 },
+    "time": { "min": 45, "max": 45 },
+    "minAge": 10,
+    "year": 2021,
+    "firstEvent": "ゲームマーケット2019",
+    "mechanics": ["ワーカープレイスメント", "バッティング", "拡大再生産"],
+    "categories": ["経済", "中量級", "戦略"],
+    "description": "蒸気と歯車の国を舞台に、工場を稼働させて遺物を加工し技術を開発しながら、誰よりも早く目標額を貯めることを目指す経済ゲーム。もとは同人作として登場し、その後サニーバードから商業版が発売された。作り込まれた中量級の拡大再生産が楽しめる。",
+    "officialUrl": "https://sunnybird.thebase.in/",
+    "sources": ["https://sunnybird.thebase.in/"],
+    "shops": [
+      { "name": "サニーバード通販", "url": "https://sunnybird.thebase.in/" }
+    ]
+  }
+]

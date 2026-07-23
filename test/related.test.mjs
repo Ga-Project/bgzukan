@@ -198,7 +198,11 @@ test("構造化データ: 全作品ぶんが JSON として直列化できる", 
 // 一致していることを out/ の実物で確認する。sitemap.ts と各ページの
 // generateMetadata は今たまたま同じ gameUrl を呼んでいるだけなので、
 // 片方だけ増減したとき（about/ を sitemap から外した等）を構造では検出できない。
-// out/ が無い環境（CI の test は build より前）ではスキップする。
+//
+// CI は build の後に test を実行するので、このテストは必ず走る（pages.yml のステップ順）。
+// skip するのは out/ を作らずに手元で pnpm test だけ回したときだけ。
+// ⚠️ ステップ順を build より前に戻すと、この検査は黙ってスキップされ、
+// sitemap から1ページ落ちても CI が緑のまま公開される。順序を動かさないこと。
 test("out/: sitemap の URL 集合と canonical 宣言ページの集合が一致する", (t) => {
   const outDir = new URL("../out/", import.meta.url);
   let sitemapXml;

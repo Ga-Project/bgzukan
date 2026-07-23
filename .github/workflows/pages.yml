@@ -50,13 +50,15 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      # データ整合・検索ロジック・関連作品・公開URL生成の回帰。
-      # 落ちたら公開に進まない（ビルドの前に置く）。
-      - run: pnpm test
       # Pages はプロジェクトページ（/bgzukan サブパス）配信。basePath を有効化する。
       - run: pnpm build
         env:
           GA_BASE_PATH: /bgzukan
+      # データ整合・検索ロジック・関連作品・公開URL生成の回帰に加え、
+      # 生成された out/ の sitemap と canonical の突き合わせも行う。
+      # **build の後に置く**（前だと out/ が無く、成果物の検査が黙ってスキップされる）。
+      # upload より前なので、落ちれば公開には進まない。
+      - run: pnpm test
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out

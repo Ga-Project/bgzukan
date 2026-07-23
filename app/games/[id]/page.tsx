@@ -195,16 +195,24 @@ export default function GamePage({ params }: { params: { id: string } }) {
               デザイナー・遊び味・卓の人数が近い順に並べる（lib/catalog.mjs）。 */}
           {related.length > 0 && (
             <section className="related" aria-labelledby="related-h">
-              <h2 id="related-h" className="related-head">
-                棚の隣
+              <div className="shelf-label">
+                <h2 id="related-h" className="shelf-label-tab">
+                  棚の隣
+                </h2>
                 <span className="related-note">
                   デザイナー・遊び味・人数が近い作品
                 </span>
-              </h2>
-              <div className="related-shelf">
-                {related.map((g) => (
-                  <GameCard game={g} key={g.id} />
-                ))}
+              </div>
+              <div className="shelf-row">
+                <ul className="box-rack">
+                  {related.map((g) => (
+                    <li className="box-slot" key={g.id}>
+                      <GameCard game={g} />
+                    </li>
+                  ))}
+                </ul>
+                {/* 棚板（箱が乗る面）。装飾なので aria 非対象。 */}
+                <div className="shelf-board" aria-hidden="true" />
               </div>
             </section>
           )}

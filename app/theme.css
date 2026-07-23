@@ -751,8 +751,12 @@
  * detail page — 箱の裏面（バックカバー）の体裁
  * ========================================================================= */
 .detail {
-  padding: var(--sp-8) 0 var(--sp-16);
-  max-width: 60rem;
+  /* padding ショートハンドにすると .container の padding-inline まで 0 に
+     上書きしてしまい、左右のガターが消えて中身が画面端で断ち切られる。
+     縦だけを指定する。 */
+  padding-block: var(--sp-8) var(--sp-16);
+  /* box-sizing: border-box なので、ガターぶんを足して本文幅 60rem を保つ。 */
+  max-width: calc(60rem + var(--sp-6) * 2);
 }
 .breadcrumb {
   display: flex;
@@ -866,35 +870,22 @@
 }
 
 /* ── 棚の隣（関連作品）──
-   棚のメタファを詳細でも継続する。トップの .box-rack と同じ陳列で箱を並べる。 */
+   棚のメタファを詳細でも継続する。陳列はトップと同じ .shelf-row / .box-rack /
+   .box-slot / .shelf-board をそのまま再利用する（値を複製すると、片方だけ棚幅を
+   変えたときにトップと詳細で箱の並びが静かにズレる）。見出しも .shelf-label の
+   木札タブを使い、詳細本文の h2（下線付き）と規格が二重になるのを避ける。 */
 .related {
   margin-top: var(--sp-12);
-  padding-top: var(--sp-10);
-  border-top: 2px solid var(--border);
+  padding-top: var(--sp-8);
 }
-.related-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--sp-3);
-  font-size: var(--fs-md);
-  margin: 0 0 var(--sp-5);
+/* 木札タブ自体が見出しなので、h2 の既定マージンだけ打ち消す。 */
+.shelf-label h2.shelf-label-tab {
+  margin: 0;
 }
 .related-note {
   font-size: var(--fs-sm);
   font-weight: var(--fw-normal);
   color: var(--text-dim);
-}
-.related-shelf {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--sp-4);
-}
-@media (min-width: 460px) {
-  .related-shelf {
-    grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
-    gap: var(--sp-5) var(--sp-4);
-  }
 }
 
 /* 箱の裏面（解説・中身・入手先・出典） */

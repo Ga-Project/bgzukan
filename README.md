@@ -32,6 +32,25 @@ pnpm build        # next build → out/ に静的 HTML/CSS/JS を生成
 
 `out/` がそのまま配信物。`next start`（サーバ常駐）は使わない。
 
+## 検索エンジンへの登録
+
+ビルドすると `sitemap.xml`（トップ・このサイトについて・全作品詳細）と `robots.txt` が
+`out/` に生成される。ただし **`robots.txt` はクローラに読まれない**。robots.txt は
+オリジンのルート（`https://ga-project.github.io/robots.txt`）だけが参照される仕様で、
+本サイトはサブパス配信のため出力先が `/bgzukan/robots.txt` になるためである。
+つまり **sitemap は置いただけでは発見されない**。
+
+sitemap を実際にクロールへ載せるには、明示送信が要る（一度きり・費用なし）。
+
+1. Google Search Console と Bing Webmaster Tools に、**URL プレフィックス**の
+   プロパティとして `https://ga-project.github.io/bgzukan/` を追加する。
+2. 所有権の確認は HTML ファイル法を使う。発行された検証ファイルを `public/` に置いて
+   デプロイすると `https://ga-project.github.io/bgzukan/<検証ファイル>` で配信され、
+   静的サイトのまま確認が通る。
+3. sitemap として `https://ga-project.github.io/bgzukan/sitemap.xml` を送信する。
+
+独自ドメインでルート配信に移した場合は、`robots.txt` がそのまま効くようになる。
+
 ## データ
 
 作品データは `data/games.json` にまとめている。1 件のスキーマと検索／絞り込みロジックは
@@ -47,15 +66,18 @@ pnpm build        # next build → out/ に静的 HTML/CSS/JS を生成
 bgzukan/
 ├─ app/
 │  ├─ page.tsx              # トップ（カタログ）。データを埋め込み CatalogClient を描画
-│  ├─ games/[id]/page.tsx   # 作品詳細（generateStaticParams で全件を静的生成）
+│  ├─ games/[id]/page.tsx   # 作品詳細（generateStaticParams で全件を静的生成）＋関連作品
+│  ├─ about/page.tsx        # このサイトについて（運営・収録基準）
 │  ├─ not-found.tsx         # 404
 │  ├─ layout.tsx            # メタ情報・アクセス計測タグ
+│  ├─ sitemap.ts            # sitemap.xml を生成（トップ・about・全作品）
+│  ├─ robots.ts             # robots.txt を生成（サブパス配信のため現構成では未到達）
 │  ├─ globals.css           # 共通デザイン基盤（トークン・light/dark・a11y）
 │  └─ theme.css             # 製品テーマ（配色・カタログ用コンポーネント）
-├─ components/              # GameCard / CatalogClient
-├─ lib/                     # types.ts / catalog.mjs（純ロジック）
+├─ components/              # GameCard / CatalogClient / JsonLd
+├─ lib/                     # types.ts / catalog.mjs / site.mjs（純ロジック）
 ├─ data/games.json          # 作品データ
-└─ test/                    # node:test（データ整合・検索ロジック）
+└─ test/                    # node:test（データ整合・検索・関連作品・公開URL/構造化データ）
 ```
 
 ## ライセンス

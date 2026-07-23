@@ -5,14 +5,38 @@
 // 構造コンセプト「ゲーム棚」:
 //   汎用の hero + 均一カードグリッドを使わない。雑誌的な題字（masthead）で始まり、
 //   作品は棚（shelf）に並ぶボックスアート（箱）として陳列される。
+import type { Metadata } from "next";
 import Link from "next/link";
 import gamesData from "@/data/games.json";
 import { collectFacets } from "@/lib/catalog.mjs";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  absoluteUrl,
+  catalogJsonLd,
+} from "@/lib/site.mjs";
 import type { Game } from "@/lib/types";
 import { CatalogClient } from "@/components/CatalogClient";
 import { SiteHeader } from "@/components/SiteHeader";
+import { JsonLd } from "@/components/JsonLd";
 
 const games = gamesData as unknown as Game[];
+
+// サブパス配信のため絶対 URL を直接与える（相対値だと /bgzukan が落ちる）。
+//
+// openGraph は全フィールドを再宣言する。Next の metadata マージはトップレベルの
+// キー単位の置換なので、ここで `{ url }` だけ書くとレイアウトの openGraph が
+// 丸ごと差し替わり、type と locale が出力から消える。
+export const metadata: Metadata = {
+  alternates: { canonical: absoluteUrl() },
+  openGraph: {
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    type: "website",
+    locale: "ja_JP",
+    url: absoluteUrl(),
+  },
+};
 
 export default function Home() {
   const facets = collectFacets(games);
@@ -95,6 +119,8 @@ export default function Home() {
           <p>© 2026 株式会社Ga Project — ボドゲ図鑑</p>
         </div>
       </footer>
+
+      <JsonLd data={catalogJsonLd(games)} />
     </>
   );
 }

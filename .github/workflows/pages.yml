@@ -50,6 +50,9 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # データ整合・検索ロジック・関連作品・公開URL生成の回帰。
+      # 落ちたら公開に進まない（ビルドの前に置く）。
+      - run: pnpm test
       # Pages はプロジェクトページ（/bgzukan サブパス）配信。basePath を有効化する。
       - run: pnpm build
         env:

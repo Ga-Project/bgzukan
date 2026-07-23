@@ -2,11 +2,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
+import { absoluteUrl } from "@/lib/site.mjs";
 
+const DESCRIPTION =
+  "ボドゲ図鑑の運営者・収録の基準・データの作り方・情報の修正/削除の依頼方法について。";
+
+// sitemap に載せる URL は canonical を宣言しておく（sitemap 掲載と canonical 宣言の
+// 集合を一致させる）。openGraph は全フィールド再宣言（キー単位の置換のため）。
 export const metadata: Metadata = {
   title: "このサイトについて",
-  description:
-    "ボドゲ図鑑の運営者・収録の基準・データの作り方・情報の修正/削除の依頼方法について。",
+  description: DESCRIPTION,
+  alternates: { canonical: absoluteUrl("about/") },
+  openGraph: {
+    title: "このサイトについて — ボドゲ図鑑",
+    description: DESCRIPTION,
+    type: "website",
+    locale: "ja_JP",
+    url: absoluteUrl("about/"),
+  },
 };
 
 export default function AboutPage() {

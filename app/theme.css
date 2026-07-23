@@ -755,9 +755,23 @@
   max-width: 60rem;
 }
 .breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-2);
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
   margin-bottom: var(--sp-5);
+}
+/* 現在地（作品名）はリンクではないので、彩度を落として遷移先と区別する。 */
+.breadcrumb [aria-current="page"] {
+  color: var(--text-dim);
+  font-weight: var(--fw-normal);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.breadcrumb-sep {
+  color: var(--text-dim);
 }
 
 /* カバー面（天面バンド + 題字 + 規格表）= 拡大した箱 */
@@ -849,6 +863,38 @@
 .spec-plate-cell dd.faint {
   color: var(--text-faint);
   font-weight: var(--fw-normal);
+}
+
+/* ── 棚の隣（関連作品）──
+   棚のメタファを詳細でも継続する。トップの .box-rack と同じ陳列で箱を並べる。 */
+.related {
+  margin-top: var(--sp-12);
+  padding-top: var(--sp-10);
+  border-top: 2px solid var(--border);
+}
+.related-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--sp-3);
+  font-size: var(--fs-md);
+  margin: 0 0 var(--sp-5);
+}
+.related-note {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-normal);
+  color: var(--text-dim);
+}
+.related-shelf {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-4);
+}
+@media (min-width: 460px) {
+  .related-shelf {
+    grid-template-columns: repeat(auto-fill, minmax(13.5rem, 1fr));
+    gap: var(--sp-5) var(--sp-4);
+  }
 }
 
 /* 箱の裏面（解説・中身・入手先・出典） */

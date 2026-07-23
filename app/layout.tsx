@@ -3,21 +3,22 @@ import type { ReactNode } from "react";
 import Script from "next/script";
 import "./globals.css";
 import "./theme.css";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site.mjs";
 
 // SEO/OGP。公開 URL（GitHub Pages のサブパス配信）を metadataBase に置く。
+// 公開 URL と説明文の正は lib/site.mjs（canonical・sitemap・JSON-LD と同じ実体を使い、
+// 片方だけ変わって canonical が死んだ URL を指す事故を防ぐ）。
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ga-project.github.io/bgzukan/"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default:
       "ボドゲ図鑑 — 国内ボードゲーム・同人タイトルの日本語データカタログ",
     template: "%s — ボドゲ図鑑",
   },
-  description:
-    "国内の商業・同人・インディーのボードゲームを、人数・プレイ時間・メカニクス・デザイナー・サークルで検索・絞り込みできる日本語のデータカタログ。",
+  description: SITE_DESCRIPTION,
   openGraph: {
-    title: "ボドゲ図鑑",
-    description:
-      "国内ボードゲーム・同人タイトルを日本語で構造化したデータカタログ。人数・時間・メカニクスで検索・絞り込み。",
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     type: "website",
     locale: "ja_JP",
   },

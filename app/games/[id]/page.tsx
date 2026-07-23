@@ -14,8 +14,12 @@ import {
   formatTime,
   formatYear,
   gameTags,
+  relatedGames,
 } from "@/lib/catalog.mjs";
+import { breadcrumbJsonLd, gameJsonLd, gameUrl } from "@/lib/site.mjs";
 import { SiteHeader } from "@/components/SiteHeader";
+import { GameCard } from "@/components/GameCard";
+import { JsonLd } from "@/components/JsonLd";
 
 const games = gamesData as unknown as Game[];
 
@@ -34,10 +38,21 @@ export function generateMetadata({
   const game = games.find((g) => g.id === params.id);
   if (!game) return { title: "ページが見つかりません" };
   const description = game.description.slice(0, 110);
+  const url = gameUrl(game);
   return {
     title: game.title,
     description,
-    openGraph: { title: `${game.title} — ボドゲ図鑑`, description },
+    // サブパス配信のため絶対 URL を直接与える（相対値だと /bgzukan が落ちる）。
+    alternates: { canonical: url },
+    // openGraph は全フィールドを再宣言する（Next の metadata マージはキー単位の
+    // 置換で、部分指定するとレイアウト側の type/locale が消えるため）。
+    openGraph: {
+      title: `${game.title} — ボドゲ図鑑`,
+      description,
+      url,
+      type: "article",
+      locale: "ja_JP",
+    },
   };
 }
 
@@ -47,6 +62,7 @@ export default function GamePage({ params }: { params: { id: string } }) {
 
   const isDoujin = game.type === "同人・インディー";
   const tags = gameTags(game);
+  const related = relatedGames(game, games, 4);
 
   // 箱裏の「規格表」。主要スペックを上段に、人物情報を下段に。
   const specs: { label: string; value: string; faint?: boolean }[] = [
@@ -78,8 +94,14 @@ export default function GamePage({ params }: { params: { id: string } }) {
 
       <main>
         <div id="detail-main" className="container detail">
+          {/* 可視パンくずは BreadcrumbList の構造化データと同じ2段にする
+              （可視内容と構造化データが一致していることが表示の要件）。 */}
           <nav className="breadcrumb" aria-label="パンくず">
             <Link href="/">← 棚に戻る</Link>
+            <span className="breadcrumb-sep" aria-hidden="true">
+              ›
+            </span>
+            <span aria-current="page">{game.title}</span>
           </nav>
 
           {/* ── 箱のカバー面（天面バンド + 題字 + 規格表） ── */}
@@ -167,8 +189,30 @@ export default function GamePage({ params }: { params: { id: string } }) {
               </ul>
             </section>
           </div>
+
+          {/* ── 棚の隣（関連作品）──
+              図鑑は1点引いて終わりではなく、隣を辿って知らない作品に出会う道具。
+              デザイナー・遊び味・卓の人数が近い順に並べる（lib/catalog.mjs）。 */}
+          {related.length > 0 && (
+            <section className="related" aria-labelledby="related-h">
+              <h2 id="related-h" className="related-head">
+                棚の隣
+                <span className="related-note">
+                  デザイナー・遊び味・人数が近い作品
+                </span>
+              </h2>
+              <div className="related-shelf">
+                {related.map((g) => (
+                  <GameCard game={g} key={g.id} />
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </main>
+
+      <JsonLd data={gameJsonLd(game)} />
+      <JsonLd data={breadcrumbJsonLd(game)} />
 
       <footer className="site-footer">
         <div className="container footer-note">

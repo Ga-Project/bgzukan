@@ -60,6 +60,22 @@ sitemap を実際にクロールへ載せるには、明示送信が要る（一
 正確性を保証するものではない。掲載情報の修正・削除の依頼は、運営の株式会社Ga Project
 （https://ga-project.net ）まで。
 
+### 共有カード（リンクを貼ったときの画像）
+
+トップと作品ごとに 1200×630 のカードを `public/og/` に置いている（作品名・種別・人数・
+プレイ時間・中身の表記）。カードは手元の Chrome（書体はヒラギノ角ゴ）で描いてコミットする
+成果物で、CI では描かない。**`data/games.json` か `tools/og/card-html.mjs` を変えたら描き直す**:
+
+```bash
+node tools/og/render.mjs
+```
+
+入力が変わったカードだけを描き直し、`lib/og-manifest.mjs`（描画の入力ハッシュと PNG の
+sha256）を更新する。描き直しを忘れる・PNG と manifest の片方だけをコミットすると
+`test/og.test.mjs` が落ちる。題字や中身の表記が収まらない作品があれば、そのカードは置き換えずに失敗する（描けたカードは PNG と manifest が一緒に確定しているので、直して再実行すれば残りから続く）。
+公開 URL には PNG のハッシュが `?v=` で付くので、描き直せば SNS 側のキャッシュも外れる。
+自動の語境界で不自然に割れる題字は `tools/og/cards.mjs` の `TITLE_BREAKS` で折り返し位置を指定する。
+
 ## 構成
 
 ```
@@ -75,7 +91,9 @@ bgzukan/
 │  ├─ globals.css           # 共通デザイン基盤（トークン・light/dark・a11y）
 │  └─ theme.css             # 製品テーマ（配色・カタログ用コンポーネント）
 ├─ components/              # GameCard / CatalogClient / JsonLd
-├─ lib/                     # types.ts / catalog.mjs / site.mjs（純ロジック）
+├─ lib/                     # types.ts / catalog.mjs / site.mjs / og.mjs / og-manifest.mjs（純ロジック）
+├─ public/og/               # 共有カード（tools/og/render.mjs が書き出す）
+├─ tools/og/                # 共有カードの中身・テンプレート・描画スクリプト
 ├─ data/games.json          # 作品データ
 └─ test/                    # node:test（データ整合・検索・関連作品・公開URL/構造化データ）
 ```

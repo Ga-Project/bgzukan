@@ -17,6 +17,7 @@ import {
   relatedGames,
 } from "@/lib/catalog.mjs";
 import { breadcrumbJsonLd, gameJsonLd, gameUrl } from "@/lib/site.mjs";
+import { gameOgAlt, gameOgUrl, ogImage } from "@/lib/og.mjs";
 import { SiteHeader } from "@/components/SiteHeader";
 import { GameCard } from "@/components/GameCard";
 import { JsonLd } from "@/components/JsonLd";
@@ -52,6 +53,8 @@ export function generateMetadata({
       url,
       type: "article",
       locale: "ja_JP",
+      // 作品ごとのカード（作品名・人数・時間）。どの作品の話かがリンクだけで分かる。
+      images: [ogImage(gameOgUrl(game), gameOgAlt(game))],
     },
   };
 }

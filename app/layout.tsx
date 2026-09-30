@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import "./theme.css";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site.mjs";
+import { SITE_OG_ALT, ogImage, siteOgUrl } from "@/lib/og.mjs";
 
 // SEO/OGP。公開 URL（GitHub Pages のサブパス配信）を metadataBase に置く。
 // 公開 URL と説明文の正は lib/site.mjs（canonical・sitemap・JSON-LD と同じ実体を使い、
@@ -21,7 +22,10 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
     type: "website",
     locale: "ja_JP",
+    images: [ogImage(siteOgUrl(), SITE_OG_ALT)],
   },
+  // X は twitter:image が無ければ og:image を使う。カードの型だけ大判にする。
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

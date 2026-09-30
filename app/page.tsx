@@ -16,6 +16,7 @@ import {
   catalogJsonLd,
 } from "@/lib/site.mjs";
 import type { Game } from "@/lib/types";
+import { SITE_OG_ALT, ogImage, siteOgUrl } from "@/lib/og.mjs";
 import { CatalogClient } from "@/components/CatalogClient";
 import { SiteHeader } from "@/components/SiteHeader";
 import { JsonLd } from "@/components/JsonLd";
@@ -35,6 +36,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ja_JP",
     url: absoluteUrl(),
+    images: [ogImage(siteOgUrl(), SITE_OG_ALT)],
   },
 };
 

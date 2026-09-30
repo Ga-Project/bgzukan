@@ -21,3 +21,6 @@ next-env.d.ts
 # OS / logs
 .DS_Store
 *.log
+
+# 共有カード描画の排他ロック（tools/og/render.mjs）
+.og-render.lock

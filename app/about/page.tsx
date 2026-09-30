@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { absoluteUrl } from "@/lib/site.mjs";
+import { SITE_OG_ALT, ogImage, siteOgUrl } from "@/lib/og.mjs";
 
 const DESCRIPTION =
   "ボドゲ図鑑の運営者・収録の基準・データの作り方・情報の修正/削除の依頼方法について。";
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ja_JP",
     url: absoluteUrl("about/"),
+    images: [ogImage(siteOgUrl(), SITE_OG_ALT)],
   },
 };
 
